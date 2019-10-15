@@ -8,7 +8,6 @@ import java.util.Map;
 import javax.validation.Valid;
 
 
-import com.lp2.sigmonio.repository.AssetsRepository;
 import com.lp2.sigmonio.repository.LocalizationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
