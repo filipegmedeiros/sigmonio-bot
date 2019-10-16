@@ -25,27 +25,23 @@ public class LocalizationServiceImpl implements LocalizationService{
     @Override
     public Map<String, Boolean> deleteLocalization(Long localizationId)
             throws ResourceNotFoundException {
-        Localization localization = localizationRepository.findById(localizationId)
-                .orElseThrow(()
-                        -> new ResourceNotFoundException("Localization not found for this id :: "
-                        + localizationId));
-
+        Localization localization = findById(localizationId);
         localizationRepository.delete(localization);
         Map<String, Boolean> response = new HashMap<>();
         response.put("deleted", Boolean.TRUE);
         return response;
     }
 
-    public ResponseEntity<Localization> updateById(Localization localizationDetails, long localizationId) {
-        Localization localization = localizationRepository.findById(localizationId)
-                .orElseThrow(() -> new ResourceNotFoundException("Localization not found for this id :: "
-                        + localizationId));
 
+    public ResponseEntity<Localization> updateById(Localization localizationDetails, long localizationId) {
+        Localization localization = findById(localizationId);
         localization.setName(localizationDetails.getName());
         localization.setDescription(localizationDetails.getDescription());
         final Localization updatedLocalization = localizationRepository.save(localization);
         return ResponseEntity.ok(updatedLocalization);
     }
+
+
 
 
     @Override
@@ -55,10 +51,15 @@ public class LocalizationServiceImpl implements LocalizationService{
 
     @Override
     public ResponseEntity<Localization> findOneById(long localizationId) {
-        Localization localization = localizationRepository.findById(localizationId).orElseThrow(()
-                -> new ResourceNotFoundException("Localization not found for this id :: "
-                        + localizationId));
+        Localization localization = findById(localizationId);
         return ResponseEntity.ok().body(localization);
+    }
+
+    @Override
+    public Localization findById(long localizationId) {
+        return localizationRepository.findById(localizationId).orElseThrow(()
+                -> new ResourceNotFoundException("Localization not found for this id :: "
+                + localizationId));
     }
 
 }

@@ -8,8 +8,11 @@ import java.util.Map;
 
 public interface LocalizationService {
     Localization save(Localization localization);
-    public Map<String, Boolean> deleteLocalization(Long localizationId);
+    Map<String, Boolean> deleteLocalization(Long localizationId);
     ResponseEntity<Localization> updateById(Localization localization, long id);
     List<Localization> findAll();
     ResponseEntity<Localization> findOneById(long id);
+    Localization findById(long id);
+
+
 }
