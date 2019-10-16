@@ -1,14 +1,12 @@
 package com.lp2.sigmonio.controller;
 
-
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.validation.Valid;
 
-
-import com.lp2.sigmonio.repository.LocalizationRepository;
+import com.lp2.sigmonio.service.LocalizationService;
+import com.lp2.sigmonio.service.LocalizationServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,54 +18,40 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.lp2.sigmonio.exception.ResourceNotFoundException;
 import com.lp2.sigmonio.model.Localization;
 
 @RestController
 @RequestMapping("/")
 public class LocalizationController {
+
     @Autowired
-    private LocalizationRepository localizationRepository;
+    private LocalizationService localizationService;
 
     @GetMapping("/localization")
     public List<Localization> getAllLocalizations() {
-        return localizationRepository.findAll();
+        return localizationService.findAll();
     }
 
     @GetMapping("/localization/{id}")
-    public ResponseEntity<Localization> getLocalizationById(@PathVariable(value = "id") Long localizationId)
-            throws ResourceNotFoundException {
-        Localization localization = localizationRepository.findById(localizationId)
-                .orElseThrow(() -> new ResourceNotFoundException("Localization not found for this id :: " + localizationId));
-        return ResponseEntity.ok().body(localization);
+    public ResponseEntity<Localization> getLocalizationById(@PathVariable(value = "id") Long localizationId){
+        return localizationService.findOneById(localizationId);
     }
 
     @PostMapping("/localization")
     public Localization createLocalization(@Valid @RequestBody Localization localization) {
-        return localizationRepository.save(localization);
+        return localizationService.save(localization);
     }
+
 
     @PutMapping("/localization/{id}")
     public ResponseEntity<Localization> updateLocalization(@PathVariable(value = "id") Long localizationId,
-                                                       @Valid @RequestBody Localization localizationDetails) throws ResourceNotFoundException {
-        Localization localization = localizationRepository.findById(localizationId)
-                .orElseThrow(() -> new ResourceNotFoundException("Localization not found for this id :: " + localizationId));
+                                                           @Valid @RequestBody Localization localizationDetails){
 
-        localization.setTitle(localizationDetails.getTitle());
-        localization.setDescription(localizationDetails.getDescription());
-        final Localization updatedLocalization = localizationRepository.save(localization);
-        return ResponseEntity.ok(updatedLocalization);
+        return localizationService.updateById(localizationDetails, localizationId);
     }
 
     @DeleteMapping("/localization/{id}")
-    public Map<String, Boolean> deleteLocalization(@PathVariable(value = "id") Long localizationId)
-            throws ResourceNotFoundException {
-        Localization localization = localizationRepository.findById(localizationId)
-                .orElseThrow(() -> new ResourceNotFoundException("Localization not found for this id :: " + localizationId));
-
-        localizationRepository.delete(localization);
-        Map<String, Boolean> response = new HashMap<>();
-        response.put("deleted", Boolean.TRUE);
-        return response;
+    public Map<String, Boolean> deleteLocalization(@PathVariable(value = "id") Long localizationId){
+        return localizationService.deleteLocalization(localizationId);
     }
 }
