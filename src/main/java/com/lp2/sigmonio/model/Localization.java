@@ -15,7 +15,7 @@ public class Localization {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @NonNull private String title;
+    @NonNull private String name;
 
     @NonNull private String description;
 
