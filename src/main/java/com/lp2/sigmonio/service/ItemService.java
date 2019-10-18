@@ -12,6 +12,7 @@ public interface ItemService {
     ResponseEntity<Item> updateById(Item item, long id);
     List<Item> findAll();
     ResponseEntity<Item> findOneById(long id);
+    List<Item> findItensByLocalization(long id);
     ResponseEntity<Item> findLocalizationByItem(Item item);
     Item findById(long id);
 
