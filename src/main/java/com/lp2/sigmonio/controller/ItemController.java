@@ -27,6 +27,11 @@ public class ItemController {
         return itemService.findOneById(itemId);
     }
 
+    @GetMapping("/itens/localization/{id}")
+    public List<Item> getItensByLocalization(@PathVariable(value = "id") Long localizationId){
+        return itemService.findItensByLocalization(localizationId);
+    }
+
     @PostMapping("/item")
     public Item createItem(@Valid @RequestBody Item item) {
         return itemService.save(item);
