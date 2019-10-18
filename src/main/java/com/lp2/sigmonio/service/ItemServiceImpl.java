@@ -1,7 +1,9 @@
 package com.lp2.sigmonio.service;
 
 import com.lp2.sigmonio.exception.ResourceNotFoundException;
+import com.lp2.sigmonio.model.Category;
 import com.lp2.sigmonio.model.Item;
+import com.lp2.sigmonio.model.Localization;
 import com.lp2.sigmonio.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +19,22 @@ public class ItemServiceImpl implements ItemService{
     @Autowired
     private ItemRepository itemRepository;
 
+    @Autowired
+    private LocalizationService localizationService;
+
+    @Autowired
+    private CategoryService categoryService;
+
 
     @Override
     public Item save(Item item) {
+        Localization localization = localizationService
+                .findById(item.getLocalization_id());
+
+        Category category = categoryService
+                .findById(item.getCategory_id());
+        item.setCategory(category);
+        item.setLocalization(localization);
         return itemRepository.save(item);
     }
 
@@ -35,10 +50,16 @@ public class ItemServiceImpl implements ItemService{
 
 
     public ResponseEntity<Item> updateById(Item itemDetails, long itemId) {
+        Localization localization = localizationService
+                .findById(itemDetails.getLocalization_id());
+        Category category = categoryService
+                .findById(itemDetails.getCategory_id());
+
         Item item = findById(itemId);
         item.setName(itemDetails.getName());
         item.setDescription(itemDetails.getDescription());
-        ;
+        item.setLocalization_id(itemDetails.getLocalization_id());
+        item.setLocalization(localization);
         final Item updatedItem = itemRepository.save(item);
         return ResponseEntity.ok(updatedItem);
     }

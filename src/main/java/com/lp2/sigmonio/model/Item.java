@@ -1,9 +1,11 @@
 package com.lp2.sigmonio.model;
 
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
+import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
 
@@ -18,6 +20,14 @@ public class Item {
     @NonNull private String name;
 
     @NonNull private String description;
+
+    @Transient
+    @JsonDeserialize
+    private int localization_id;
+
+    @JsonDeserialize
+    @Transient
+    private int category_id;
 
     @ManyToOne
     @JoinColumn(name = "localization_id")
