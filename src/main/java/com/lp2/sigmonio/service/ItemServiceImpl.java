@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -86,6 +87,18 @@ public class ItemServiceImpl implements ItemService{
         return itemRepository.findById(itemId).orElseThrow(()
                 -> new ResourceNotFoundException("Localization not found for this id :: "
                 + itemId));
+    }
+
+    @Override
+    public List<Item> findItensByLocalization(long id) {
+        List<Item> allItensArray = itemRepository.findAll();
+
+        List<Item> filtredList = new ArrayList<Item>();
+        allItensArray.forEach((item -> {
+            if (item.getLocalization().getId() == id)
+                filtredList.add(item);
+        }));
+        return filtredList;
     }
 
 }
