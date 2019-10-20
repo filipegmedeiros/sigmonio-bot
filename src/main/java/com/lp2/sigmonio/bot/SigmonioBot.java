@@ -3,9 +3,7 @@ package com.lp2.sigmonio.bot;
 import org.telegram.abilitybots.api.bot.AbilityBot;
 import org.telegram.abilitybots.api.objects.Ability;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.Statement;
+import java.sql.*;
 
 import static org.telegram.abilitybots.api.objects.Locality.ALL;
 import static org.telegram.abilitybots.api.objects.Privacy.PUBLIC;
@@ -82,6 +80,44 @@ public class SigmonioBot extends AbilityBot {
                 .build();
     }
 
+    public Ability list() {
+        return Ability.builder()
+                .name("list")
+                .info("list localizations, categories or items")
+                .privacy(PUBLIC)
+                .locality(ALL)
+                .input(0)
+                .action(ctx -> {
+                    String list = "";
+                    switch (ctx.firstArg()) {
+                        case "localizations":
+                            list = getList("localization");
+                            if (list.length() != 0)
+                                silent.send(list, ctx.chatId());
+                            else
+                                silent.send("Something is wrong, could not list localizations", ctx.chatId());
+                            break;
+                        case "categories":
+                            list = getList("categories");
+                            if (list.length() != 0)
+                                silent.send(list, ctx.chatId());
+                            else
+                                silent.send("Something is wrong, could not list categories", ctx.chatId());
+                            break;
+                        case "items": //Not working
+                            list = getList("items");
+                            if (list.length() != 0)
+                                silent.send(list, ctx.chatId());
+                            else
+                                silent.send("Something is wrong, could not list items", ctx.chatId());
+                            break;
+                        default:
+                            silent.send("Invalid option, use localizations, categories or items", ctx.chatId());
+                    }
+                })
+                .build();
+    }
+
     public Ability commandNotFound() {
         return Ability.builder()
                 .name(DEFAULT)
@@ -128,5 +164,47 @@ public class SigmonioBot extends AbilityBot {
             return false;
         }
         return true;
+    }
+
+    private String getList(String local) {
+        String list = "";
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+            try {
+            connection = DriverManager
+                    .getConnection("jdbc:postgresql://localhost:15432/postgres",
+                            "postgres", "passwd");
+
+            if (local.equals("localization"))
+            {
+                preparedStatement = connection.prepareStatement("SELECT * FROM LOCALIZATION");
+                resultSet = preparedStatement.executeQuery();
+                while (resultSet.next()) {
+                    list += resultSet.getString(2) + "\n";
+                }
+            }
+            else if (local.equals("categories"))
+            {
+                preparedStatement = connection.prepareStatement("SELECT * FROM CATEGORY");
+                resultSet = preparedStatement.executeQuery();
+                while (resultSet.next()) {
+                    list += resultSet.getString(2) + "\n";
+                }
+            }
+            else if (local.equals("items"))
+            {
+                preparedStatement = connection.prepareStatement("SELECT * FROM ITEM");
+                resultSet = preparedStatement.executeQuery();
+                while (resultSet.next()) {
+                    list += resultSet.getString(2) + "\n";
+                }
+            }
+            connection.close();
+        } catch ( Exception e ) {
+            e.printStackTrace();
+        }
+
+        return list;
     }
 }
