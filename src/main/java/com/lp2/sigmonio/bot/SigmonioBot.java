@@ -29,7 +29,7 @@ public class SigmonioBot extends AbilityBot {
         this.listaDeComandos =
                 "/register {localization, category or item} {data} - Register one localization, category or item\n" +
                 "/list {localizations, categories or localization} - List localizations, categories or items from one localization\n" +
-                "/search {name or description} - Search items\n" +
+                "/search {name or description} - Search item by name or description\n" +
                 "/report - Generate a report";
     }
 
@@ -47,7 +47,7 @@ public class SigmonioBot extends AbilityBot {
     public Ability register() {
         return Ability.builder()
                 .name("register")
-                .info("Register one location, categories or items")
+                .info("Register one location, category or item")
                 .privacy(PUBLIC)
                 .locality(ALL)
                 .input(0)
@@ -79,6 +79,17 @@ public class SigmonioBot extends AbilityBot {
                             silent.send("Invalid option, use localization, category or item", ctx.chatId());
                     }
                 })
+                .build();
+    }
+
+    public Ability commandNotFound() {
+        return Ability.builder()
+                .name(DEFAULT)
+                .privacy(PUBLIC)
+                .locality(ALL)
+                .input(0)
+                .action(ctx -> silent.send("\"" + ctx.update().getMessage().getText() + "\"" +
+                        " is not a command, you can control me by sending these commands:\n" + listaDeComandos, ctx.chatId()))
                 .build();
     }
 
