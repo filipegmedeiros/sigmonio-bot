@@ -12,8 +12,6 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 
-
-
 # Directory Color
 .directory
 
@@ -28,7 +26,6 @@ dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
 
-
 ### Gradle template
 .gradle
 build/
@@ -38,7 +35,6 @@ gradle-app.setting
 
 # Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
 !gradle-wrapper.jar
-
 
 ### JetBrains template
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion
@@ -129,6 +125,10 @@ local.properties
 
 # TeXlipse plugin
 .texlipse
+
+#Telegram
+sigmonio_bot
+sigmonio_bot .wal.0
 
 /target/
 =======
