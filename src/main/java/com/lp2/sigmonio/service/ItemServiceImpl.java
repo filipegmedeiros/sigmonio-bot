@@ -26,7 +26,6 @@ public class ItemServiceImpl implements ItemService{
     @Autowired
     private CategoryService categoryService;
 
-
     @Override
     public Item save(Item item) {
         Localization localization = localizationService
@@ -49,7 +48,6 @@ public class ItemServiceImpl implements ItemService{
         return response;
     }
 
-
     public ResponseEntity<Item> updateById(Item itemDetails, long itemId) {
         Localization localization = localizationService
                 .findById(itemDetails.getLocalization_id());
@@ -64,7 +62,6 @@ public class ItemServiceImpl implements ItemService{
         final Item updatedItem = itemRepository.save(item);
         return ResponseEntity.ok(updatedItem);
     }
-
 
     @Override
     public List<Item> findAll() {
@@ -100,5 +97,4 @@ public class ItemServiceImpl implements ItemService{
         }));
         return filtredList;
     }
-
 }

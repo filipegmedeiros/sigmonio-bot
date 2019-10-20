@@ -29,6 +29,4 @@ public abstract class AuditModel implements Serializable {
     @Column(name = "updatedAt", nullable = false)
     @LastModifiedDate
     private Date updatedAt;
-
-
 }

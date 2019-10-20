@@ -13,6 +13,4 @@ public interface LocalizationService {
     List<Localization> findAll();
     ResponseEntity<Localization> findOneById(long id);
     Localization findById(long id);
-
-
 }

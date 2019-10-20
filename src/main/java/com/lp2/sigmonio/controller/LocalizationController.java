@@ -42,7 +42,6 @@ public class LocalizationController {
         return localizationService.save(localization);
     }
 
-
     @PutMapping("/localization/{id}")
     public ResponseEntity<Localization> updateLocalization(@PathVariable(value = "id") Long localizationId,
                                                            @Valid @RequestBody Localization localizationDetails){

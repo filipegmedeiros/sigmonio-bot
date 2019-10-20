@@ -32,7 +32,6 @@ public class CategoryServiceImpl implements CategoryService{
         return response;
     }
 
-
     public ResponseEntity<Category> updateById(Category categoryDetails, long categoryId) {
         Category category = findById(categoryId);
         category.setName(categoryDetails.getName());
@@ -40,9 +39,6 @@ public class CategoryServiceImpl implements CategoryService{
         final Category updatedCategory = categoryRepository.save(category);
         return ResponseEntity.ok(updatedCategory);
     }
-
-
-
 
     @Override
     public List<Category> findAll() {
@@ -61,5 +57,4 @@ public class CategoryServiceImpl implements CategoryService{
                 -> new ResourceNotFoundException("Category not found for this id :: "
                 + categoryId));
     }
-
 }

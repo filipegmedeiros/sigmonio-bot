@@ -15,5 +15,4 @@ public interface ItemService {
     List<Item> findItensByLocalization(long id);
     ResponseEntity<Item> findLocalizationByItem(Item item);
     Item findById(long id);
-
 }

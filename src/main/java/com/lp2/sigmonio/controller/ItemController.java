@@ -37,7 +37,6 @@ public class ItemController {
         return itemService.save(item);
     }
 
-
     @PutMapping("/item/{id}")
     public ResponseEntity<Item> updateItem(@PathVariable(value = "id") Long itemId,
                                            @Valid @RequestBody Item itemDetails){

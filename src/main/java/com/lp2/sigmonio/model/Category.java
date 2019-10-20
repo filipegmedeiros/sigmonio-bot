@@ -21,5 +21,4 @@ public class Category {
     private String name;
 
     @NonNull private String description;
-
 }

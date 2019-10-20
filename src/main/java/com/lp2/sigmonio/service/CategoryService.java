@@ -13,6 +13,4 @@ public interface CategoryService {
     List<Category> findAll();
     ResponseEntity<Category> findOneById(long id);
     Category findById(long id);
-
-
 }

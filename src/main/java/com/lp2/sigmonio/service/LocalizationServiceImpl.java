@@ -32,7 +32,6 @@ public class LocalizationServiceImpl implements LocalizationService{
         return response;
     }
 
-
     public ResponseEntity<Localization> updateById(Localization localizationDetails, long localizationId) {
         Localization localization = findById(localizationId);
         localization.setName(localizationDetails.getName());
@@ -40,9 +39,6 @@ public class LocalizationServiceImpl implements LocalizationService{
         final Localization updatedLocalization = localizationRepository.save(localization);
         return ResponseEntity.ok(updatedLocalization);
     }
-
-
-
 
     @Override
     public List<Localization> findAll() {
@@ -61,5 +57,4 @@ public class LocalizationServiceImpl implements LocalizationService{
                 -> new ResourceNotFoundException("Localization not found for this id :: "
                 + localizationId));
     }
-
 }
