@@ -82,7 +82,7 @@ public class ItemServiceImpl implements ItemService{
     @Override
     public Item findById(long itemId) {
         return itemRepository.findById(itemId).orElseThrow(()
-                -> new ResourceNotFoundException("Localization not found for this id :: "
+                -> new ResourceNotFoundException("Localization not found for this id: "
                 + itemId));
     }
 
