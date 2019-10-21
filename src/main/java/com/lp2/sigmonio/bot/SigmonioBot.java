@@ -1,9 +1,18 @@
 package com.lp2.sigmonio.bot;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.util.EntityUtils;
+
 import org.telegram.abilitybots.api.bot.AbilityBot;
 import org.telegram.abilitybots.api.objects.Ability;
 
-import java.sql.*;
+import java.io.IOException;
 
 import static org.telegram.abilitybots.api.objects.Locality.ALL;
 import static org.telegram.abilitybots.api.objects.Privacy.PUBLIC;
@@ -80,7 +89,7 @@ public class SigmonioBot extends AbilityBot {
                 .build();
     }
 
-    public Ability list() {
+    public Ability list() { //Not working
         return Ability.builder()
                 .name("list")
                 .info("list localizations, categories or items")
@@ -104,7 +113,7 @@ public class SigmonioBot extends AbilityBot {
                             else
                                 silent.send("Something is wrong, could not list categories", ctx.chatId());
                             break;
-                        case "items": //Not working
+                        case "items":
                             list = getList("items");
                             if (list.length() != 0)
                                 silent.send(list, ctx.chatId());
@@ -129,82 +138,83 @@ public class SigmonioBot extends AbilityBot {
                 .build();
     }
 
-    private boolean insert(String local, String[] data)
-    {
-        Connection connection = null;
-        Statement statement = null;
-        try {
-            Class.forName("org.postgresql.Driver");
-            connection = DriverManager
-                    .getConnection("jdbc:postgresql://localhost:15432/postgres",
-                            "postgres", "passwd");
+    private boolean insert(String local, String[] data) {
+        String content = "";
+        StringEntity entity;
+        CloseableHttpClient httpClient;
+        HttpPost request = null;
+        if (local.equals("localization")) {
+            content = "{" +
+                    "\"name\": \"" + data[0] + "\"," +
+                    "\"description\": \"" + data[1] + "\"" +
+                    "}";
 
-            statement = connection.createStatement();
-            String content = "";
-            if (local.equals("localization"))
-            {
-                content = "INSERT INTO LOCALIZATION (NAME,DESCRIPTION) " +
-                        String.format("VALUES ('%s', '%s');", data[0], data[1]);
-            }
-            else if (local.equals("category"))
-            {
-                content = "INSERT INTO CATEGORY (NAME,DESCRIPTION) " +
-                        String.format("VALUES ('%s', '%s');", data[0], data[1]);
-            }
-            else if (local.equals("item"))
-            {
-                content = "INSERT INTO ITEM (NAME,DESCRIPTION,LOCALIZATION_ID,CATEGORY_ID) " +
-                        String.format("VALUES ('%s', '%s', '%d', '%d');", data[0], data[1], Integer.parseInt(data[2]), Integer.parseInt(data[3]));
-            }
-            statement.executeUpdate(content);
-            statement.close();
-            connection.close();
-        } catch ( Exception e ) {
-            e.printStackTrace();
+            request = new HttpPost("http://localhost:8080/localization");
+        }
+        else if (local.equals("category"))
+        {
+            content = "{" +
+                    "\"name\": \"" + data[0] + "\"," +
+                    "\"description\": \"" + data[1] + "\"" +
+                    "}";
+
+            request = new HttpPost("http://localhost:8080/category");
+        }
+        else if (local.equals("item"))
+        {
+            content = "{" +
+                    "\"name\": \"" + data[0] + "\"," +
+                    "\"description\": \"" + data[1] + "\"," +
+                    "\"localization_id\": " + data[2] + "," +
+                    "\"category_id\": " + data[3] +
+                    "}";
+
+            request = new HttpPost("http://localhost:8080/item");
+        }
+
+        entity = new StringEntity(content,
+                ContentType.APPLICATION_JSON);
+        request.setEntity(entity);
+        httpClient = HttpClientBuilder.create().build();
+        HttpResponse response = null;
+        try {
+            response = httpClient.execute(request);
+        } catch (IOException e) {
             return false;
         }
-        return true;
+        if (response.getStatusLine().getStatusCode() == 200)
+            return true;
+        else
+            return false;
     }
 
     private String getList(String local) {
-        String list = "";
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
-            try {
-            connection = DriverManager
-                    .getConnection("jdbc:postgresql://localhost:15432/postgres",
-                            "postgres", "passwd");
+        String content = "";
+        CloseableHttpClient httpClient;
+        HttpGet request = null;
+        if (local.equals("localization")) {
+            request = new HttpGet("http://localhost:8080/localization");
+        }
+        else if (local.equals("category"))
+        {
+            request = new HttpGet("http://localhost:8080/category");
+        }
+        else if (local.equals("item"))
+        {
+            request = new HttpGet("http://localhost:8080/item");
+        }
 
-            if (local.equals("localization"))
-            {
-                preparedStatement = connection.prepareStatement("SELECT * FROM LOCALIZATION");
-                resultSet = preparedStatement.executeQuery();
-                while (resultSet.next()) {
-                    list += resultSet.getString(2) + "\n";
-                }
-            }
-            else if (local.equals("categories"))
-            {
-                preparedStatement = connection.prepareStatement("SELECT * FROM CATEGORY");
-                resultSet = preparedStatement.executeQuery();
-                while (resultSet.next()) {
-                    list += resultSet.getString(2) + "\n";
-                }
-            }
-            else if (local.equals("items"))
-            {
-                preparedStatement = connection.prepareStatement("SELECT * FROM ITEM");
-                resultSet = preparedStatement.executeQuery();
-                while (resultSet.next()) {
-                    list += resultSet.getString(2) + "\n";
-                }
-            }
-            connection.close();
-        } catch ( Exception e ) {
+        httpClient = HttpClientBuilder.create().build();
+        HttpResponse response = null;
+        try {
+            response = httpClient.execute(request);
+
+            System.out.println(EntityUtils.toString(response.getEntity()));
+        }
+        catch (IOException e) {
             e.printStackTrace();
         }
 
-        return list;
+        return content;
     }
 }
