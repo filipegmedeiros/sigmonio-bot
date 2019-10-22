@@ -3,6 +3,7 @@ package com.lp2.sigmonio.service;
 import com.lp2.sigmonio.exception.ResourceNotFoundException;
 import com.lp2.sigmonio.model.Localization;
 import com.lp2.sigmonio.repository.LocalizationRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class LocalizationServiceImpl implements LocalizationService{
 
     @Autowired
@@ -25,7 +27,7 @@ public class LocalizationServiceImpl implements LocalizationService{
     }
 
     @Override
-    public Map<String, Boolean> deleteLocalization(Long localizationId)
+    public Map<String, Boolean> deleteLocalization(String localizationId)
             throws ResourceNotFoundException {
         Localization localization = findById(localizationId);
         localizationRepository.delete(localization);
@@ -34,7 +36,7 @@ public class LocalizationServiceImpl implements LocalizationService{
         return response;
     }
 
-    public ResponseEntity<Localization> updateById(Localization localizationDetails, long localizationId) {
+    public ResponseEntity<Localization> updateById(Localization localizationDetails, String localizationId) {
         Localization localization = findById(localizationId);
         localization.setName(localizationDetails.getName());
         localization.setDescription(localizationDetails.getDescription());
@@ -48,13 +50,13 @@ public class LocalizationServiceImpl implements LocalizationService{
     }
 
     @Override
-    public ResponseEntity<Localization> findOneById(long localizationId) {
+    public ResponseEntity<Localization> findOneById(String localizationId) {
         Localization localization = findById(localizationId);
         return ResponseEntity.ok().body(localization);
     }
 
     @Override
-    public Localization findById(long localizationId) {
+    public Localization findById(String localizationId) {
         return localizationRepository.findById(localizationId).orElseThrow(()
                 -> new ResourceNotFoundException("Localization not found for this id :: "
                 + localizationId));
@@ -63,7 +65,6 @@ public class LocalizationServiceImpl implements LocalizationService{
 
     @Override
     public Optional<Localization> find(Update update) {
-        String text = update.getMessage().getText();
-        return localizationRepository.findById(Long.parseLong(text));
+        return localizationRepository.findById(update.getMessage().getText());
     }
 }

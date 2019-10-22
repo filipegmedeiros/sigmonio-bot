@@ -10,10 +10,10 @@ import java.util.Optional;
 
 public interface LocalizationService {
     Localization save(Localization localization);
-    Map<String, Boolean> deleteLocalization(Long localizationId);
-    ResponseEntity<Localization> updateById(Localization localization, long id);
+    Map<String, Boolean> deleteLocalization(String localizationId);
+    ResponseEntity<Localization> updateById(Localization localization, String id);
     List<Localization> findAll();
-    ResponseEntity<Localization> findOneById(long id);
-    Localization findById(long id);
+    ResponseEntity<Localization> findOneById(String id);
+    Localization findById(String id);
     Optional<Localization> find(Update update);
 }

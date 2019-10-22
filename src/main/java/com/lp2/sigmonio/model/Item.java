@@ -23,11 +23,11 @@ public class Item {
 
     @Transient
     @JsonDeserialize
-    private int localization_id;
+    private String localization_id;
 
     @JsonDeserialize
     @Transient
-    private int category_id;
+    private long category_id;
 
     @ManyToOne
     @JoinColumn(name = "localization_id")

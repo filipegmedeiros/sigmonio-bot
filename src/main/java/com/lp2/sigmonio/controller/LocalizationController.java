@@ -33,7 +33,7 @@ public class LocalizationController {
     }
 
     @GetMapping("/localization/{id}")
-    public ResponseEntity<Localization> getLocalizationById(@PathVariable(value = "id") Long localizationId){
+    public ResponseEntity<Localization> getLocalizationById(@PathVariable(value = "id") String localizationId){
         return localizationService.findOneById(localizationId);
     }
 
@@ -43,14 +43,14 @@ public class LocalizationController {
     }
 
     @PutMapping("/localization/{id}")
-    public ResponseEntity<Localization> updateLocalization(@PathVariable(value = "id") Long localizationId,
+    public ResponseEntity<Localization> updateLocalization(@PathVariable(value = "id") String localizationId,
                                                            @Valid @RequestBody Localization localizationDetails){
 
         return localizationService.updateById(localizationDetails, localizationId);
     }
 
     @DeleteMapping("/localization/{id}")
-    public Map<String, Boolean> deleteLocalization(@PathVariable(value = "id") Long localizationId){
+    public Map<String, Boolean> deleteLocalization(@PathVariable(value = "id") String localizationId){
         return localizationService.deleteLocalization(localizationId);
     }
 }
