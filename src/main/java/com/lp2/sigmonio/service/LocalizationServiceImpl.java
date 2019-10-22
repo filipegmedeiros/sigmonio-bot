@@ -62,9 +62,19 @@ public class LocalizationServiceImpl implements LocalizationService{
                 + localizationId));
     }
 
+    @Override
+    public boolean existLocalizationByName(String name) {
+        return localizationRepository.existsByName(name);
+    }
+
+
+
+
 
     @Override
     public Optional<Localization> find(Update update) {
         return localizationRepository.findById(update.getMessage().getText());
     }
+
+
 }

@@ -15,5 +15,7 @@ public interface LocalizationService {
     List<Localization> findAll();
     ResponseEntity<Localization> findOneById(String id);
     Localization findById(String id);
+
+    boolean existLocalizationByName(String name);
     Optional<Localization> find(Update update);
 }

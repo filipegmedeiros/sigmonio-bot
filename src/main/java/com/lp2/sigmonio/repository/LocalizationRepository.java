@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface LocalizationRepository extends JpaRepository<Localization, String> {
+
+    boolean existsByName(String name);
 }
