@@ -6,10 +6,12 @@ import com.lp2.sigmonio.repository.LocalizationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class LocalizationServiceImpl implements LocalizationService{
@@ -56,5 +58,12 @@ public class LocalizationServiceImpl implements LocalizationService{
         return localizationRepository.findById(localizationId).orElseThrow(()
                 -> new ResourceNotFoundException("Localization not found for this id :: "
                 + localizationId));
+    }
+
+
+    @Override
+    public Optional<Localization> find(Update update) {
+        String text = update.getMessage().getText();
+        return localizationRepository.findById(Long.parseLong(text));
     }
 }

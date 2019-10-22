@@ -14,14 +14,14 @@ public class SigmonioApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(SigmonioApplication.class, args);
-
 		ApiContextInitializer.init();
+
+	/*	ApiContextInitializer.init();
 
 		TelegramBotsApi api = new TelegramBotsApi();
 		try {
 			api.registerBot(new SigmonioBot());
 		} catch (TelegramApiRequestException e) {
-			e.printStackTrace();
+			e.printStackTrace();*/
 		}
 	}
-}
