@@ -1,7 +1,9 @@
 package com.lp2.sigmonio.bot;
 
 import com.lp2.sigmonio.model.Localization;
+import com.lp2.sigmonio.repository.LocalizationRepository;
 import com.lp2.sigmonio.service.LocalizationService;
+import com.lp2.sigmonio.service.LocalizationServiceImpl;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.experimental.FieldDefaults;
@@ -25,8 +27,6 @@ public class SigmonioBot extends TelegramLongPollingBot {
     @Autowired
     LocalizationService localizationService;
 
-
-
     @Getter
     @Value("${bot.username}")
     String botUsername;
@@ -36,19 +36,24 @@ public class SigmonioBot extends TelegramLongPollingBot {
     String botToken;
 
 
+    @Autowired
+    public SigmonioBot(LocalizationService localizationService) {
+        this.localizationService = localizationService;
+    }
+
+
     @Override
     public void onUpdateReceived(Update update) {
 
         Localization localization = null;
         try {
             localization = localizationService.find(update).get();
-            if (localization.getDescription() != null)
+            if (localization.getName() != null)
                 sendTextMessage(update.getMessage().getChatId(), localization.getName());
-            else
-                sendTextMessage(update.getMessage().getChatId(), "there is no localization ");
+            else sendTextMessage(update.getMessage().getChatId(), "there is no error ");
 
         } catch (Exception e) {
-            sendTextMessage(update.getMessage().getChatId(), "error");
+            sendTextMessage(update.getMessage().getChatId(), "there is no such localization");
         }
     }
 
@@ -65,6 +70,4 @@ public class SigmonioBot extends TelegramLongPollingBot {
             log.error(e);
         }
     }
-
-
 }
