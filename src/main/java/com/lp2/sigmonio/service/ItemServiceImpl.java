@@ -33,13 +33,6 @@ public class ItemServiceImpl implements ItemService{
 
     @Override
     public Item save(Item item) {
-        Localization localization = localizationService
-                .findByName(item.getLocalization_id());
-
-        Category category = categoryService
-                .findById(item.getCategory_id());
-        item.setCategory(category);
-        item.setLocalization(localization);
         return itemRepository.save(item);
     }
 
@@ -54,16 +47,10 @@ public class ItemServiceImpl implements ItemService{
     }
 
     public ResponseEntity<Item> updateById(Item itemDetails, long itemId) {
-        Localization localization = localizationService
-                .findByName(itemDetails.getLocalization_id());
-        Category category = categoryService
-                .findById(itemDetails.getCategory_id());
 
         Item item = findById(itemId);
         item.setName(itemDetails.getName());
         item.setDescription(itemDetails.getDescription());
-        item.setLocalization_id(itemDetails.getLocalization_id());
-        item.setLocalization(localization);
         final Item updatedItem = itemRepository.save(item);
         return ResponseEntity.ok(updatedItem);
     }
@@ -92,14 +79,7 @@ public class ItemServiceImpl implements ItemService{
     }
 
     @Override
-    public List<Item> findItensByLocalization(long id) {
-        List<Item> allItensArray = itemRepository.findAll();
-
-        List<Item> filtredList = new ArrayList<Item>();
-        allItensArray.forEach((item -> {
-            if (item.getLocalization().getId() == id)
-                filtredList.add(item);
-        }));
-        return filtredList;
+    public List<Item> findItensByLocalization(String name) {
+        return itemRepository.findAllByLocalization(localizationService.findByName(name));
     }
 }

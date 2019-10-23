@@ -63,6 +63,11 @@ public class CategoryServiceImpl implements CategoryService{
     }
 
     @Override
+    public boolean exists(String name) {
+        return categoryRepository.existsByName(name);
+    }
+
+    @Override
     public Category findByName(String name) {
         return categoryRepository.findByName(name).orElseThrow(()
                 -> new ResourceNotFoundException("Category not found for this name :: "
