@@ -21,14 +21,6 @@ public class Item {
 
     @NonNull private String description;
 
-    @Transient
-    @JsonDeserialize
-    private String localization_id;
-
-    @JsonDeserialize
-    @Transient
-    private long category_id;
-
     @ManyToOne
     @JoinColumn(name = "localization_id")
     private Localization localization;
