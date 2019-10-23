@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 @Service
 public class SigmonioServiceImpl implements SigmonioService {
@@ -65,7 +66,7 @@ public class SigmonioServiceImpl implements SigmonioService {
 
     @Override
     public boolean verifyCategory(String name) {
-        return false;
+        return categoryService.exists(name);
     }
 
     @Override
@@ -94,6 +95,26 @@ public class SigmonioServiceImpl implements SigmonioService {
         item.setCategory(categoryService.findByName(categoryName));
         itemService.save(item);
     };
+
+
+    public List<Localization> showLocalization(){
+        return localizationService.findAll();
+    }
+
+    @Override
+    public List<Category> showCategory() {
+        return categoryService.findAll();
+    }
+
+    @Override
+    public List<Item> showItem() {
+        return itemService.findAll();
+    }
+
+    public List<Item> showItemByLocalizationName(String name) {
+        return itemService.findItensByLocalization(name);
+    }
+
 
 }
 
