@@ -12,7 +12,6 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -27,17 +26,17 @@ public class LocalizationServiceImpl implements LocalizationService{
     }
 
     @Override
-    public Map<String, Boolean> deleteLocalization(String localizationId)
+    public Map<String, Boolean> deleteLocalization(String localizationName)
             throws ResourceNotFoundException {
-        Localization localization = findById(localizationId);
+        Localization localization = findByName(localizationName);
         localizationRepository.delete(localization);
         Map<String, Boolean> response = new HashMap<>();
         response.put("deleted", Boolean.TRUE);
         return response;
     }
 
-    public ResponseEntity<Localization> updateById(Localization localizationDetails, String localizationId) {
-        Localization localization = findById(localizationId);
+    public ResponseEntity<Localization> updateByName(Localization localizationDetails, String localizationName) {
+        Localization localization = findByName(localizationName);
         localization.setName(localizationDetails.getName());
         localization.setDescription(localizationDetails.getDescription());
         final Localization updatedLocalization = localizationRepository.save(localization);
@@ -50,30 +49,15 @@ public class LocalizationServiceImpl implements LocalizationService{
     }
 
     @Override
-    public ResponseEntity<Localization> findOneById(String localizationId) {
-        Localization localization = findById(localizationId);
-        return ResponseEntity.ok().body(localization);
-    }
-
-    @Override
-    public Localization findById(String localizationId) {
-        return localizationRepository.findById(localizationId).orElseThrow(()
-                -> new ResourceNotFoundException("Localization not found for this id :: "
-                + localizationId));
-    }
-
-    @Override
-    public boolean existLocalizationByName(String name) {
+    public boolean exists(String name) {
         return localizationRepository.existsByName(name);
     }
 
-
-
-
-
     @Override
-    public Optional<Localization> find(Update update) {
-        return localizationRepository.findById(update.getMessage().getText());
+    public Localization findByName(String name) {
+        return localizationRepository.findByName(name).orElseThrow(()
+                -> new ResourceNotFoundException("Localization not found for this name :: "
+                + name));
     }
 
 

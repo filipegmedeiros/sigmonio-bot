@@ -29,7 +29,7 @@ public class ItemServiceImpl implements ItemService{
     @Override
     public Item save(Item item) {
         Localization localization = localizationService
-                .findById(item.getLocalization_id());
+                .findByName(item.getLocalization_id());
 
         Category category = categoryService
                 .findById(item.getCategory_id());
@@ -50,7 +50,7 @@ public class ItemServiceImpl implements ItemService{
 
     public ResponseEntity<Item> updateById(Item itemDetails, long itemId) {
         Localization localization = localizationService
-                .findById(itemDetails.getLocalization_id());
+                .findByName(itemDetails.getLocalization_id());
         Category category = categoryService
                 .findById(itemDetails.getCategory_id());
 

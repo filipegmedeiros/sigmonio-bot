@@ -57,4 +57,12 @@ public class CategoryServiceImpl implements CategoryService{
                 -> new ResourceNotFoundException("Category not found for this id :: "
                 + categoryId));
     }
+
+    @Override
+    public Category findByName(String name) {
+        return categoryRepository.findByName(name).orElseThrow(()
+                -> new ResourceNotFoundException("Category not found for this name :: "
+                + name));
+    }
+
 }
