@@ -17,8 +17,12 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class LocalizationServiceImpl implements LocalizationService{
 
-    @Autowired
     private LocalizationRepository localizationRepository;
+
+    @Autowired
+    public LocalizationServiceImpl(LocalizationRepository localizationRepository) {
+        this.localizationRepository = localizationRepository;
+    }
 
     @Override
     public Localization save(Localization localization) {

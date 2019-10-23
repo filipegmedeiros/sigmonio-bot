@@ -14,8 +14,12 @@ import java.util.Map;
 @RequestMapping("/")
 public class ItemController {
 
-    @Autowired
     private ItemService itemService;
+
+    @Autowired
+    public ItemController(ItemService itemService) {
+        this.itemService = itemService;
+    }
 
     @GetMapping("/item")
     public List<Item> getAllItems() {

@@ -17,14 +17,19 @@ import java.util.Map;
 @Service
 public class ItemServiceImpl implements ItemService{
 
-    @Autowired
     private ItemRepository itemRepository;
-
-    @Autowired
     private LocalizationService localizationService;
+    private CategoryService categoryService;
 
     @Autowired
-    private CategoryService categoryService;
+    public ItemServiceImpl(ItemRepository itemRepository,
+                           LocalizationService localizationService,
+                           CategoryService categoryService) {
+        this.itemRepository = itemRepository;
+        this.localizationService = localizationService;
+        this.categoryService = categoryService;
+    }
+
 
     @Override
     public Item save(Item item) {

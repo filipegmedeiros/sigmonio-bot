@@ -15,15 +15,18 @@ import java.util.Arrays;
 @Service
 public class SigmonioServiceImpl implements SigmonioService {
 
-    @Autowired
     private LocalizationService localizationService;
-
-    @Autowired
     private CategoryService categoryService;
-
-    @Autowired
     private ItemService itemService;
 
+    @Autowired
+    public SigmonioServiceImpl(ItemService itemService,
+                               LocalizationService localizationService,
+                               CategoryService categoryService) {
+        this.itemService = itemService;
+        this.localizationService = localizationService;
+        this.categoryService = categoryService;
+    }
 
     @Override
     public boolean verifyArguments(ArrayList<String> arguments, int size) {

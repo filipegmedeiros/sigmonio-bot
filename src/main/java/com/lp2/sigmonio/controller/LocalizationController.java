@@ -24,8 +24,12 @@ import com.lp2.sigmonio.model.Localization;
 @RequestMapping("/")
 public class LocalizationController {
 
-    @Autowired
     private LocalizationService localizationService;
+
+    @Autowired
+    public LocalizationController(LocalizationService localizationService) {
+        this.localizationService = localizationService;
+    }
 
     @GetMapping("/localization")
     public List<Localization> getAllLocalizations() {
