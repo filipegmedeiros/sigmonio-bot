@@ -5,6 +5,8 @@ import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import org.telegram.abilitybots.api.bot.AbilityBot;
 import org.telegram.abilitybots.api.objects.Ability;
@@ -21,15 +23,13 @@ import static org.telegram.abilitybots.api.objects.Privacy.PUBLIC;
 public class SigmonioBot extends AbilityBot {
     String commands;
 
-    @Autowired
-    SigmonioService sigmonioService;
-
-    private static final String BOT_TOKEN = "981659676:AAGKqVtYVNp-4TjI1GQg92JuH8kQnegKH0o";
-    private static final String BOT_USERNAME = "sigmonio_bot ";
+    private SigmonioService sigmonioService;
 
     @Autowired
-    public SigmonioBot() {
-        super(BOT_TOKEN, BOT_USERNAME);
+    protected SigmonioBot(SigmonioService sigmonioService, Environment env) {
+        super(env.getProperty("bot.token"), env.getProperty("bot.username"));
+
+        this.sigmonioService = sigmonioService;
         setCommands();
     }
 
