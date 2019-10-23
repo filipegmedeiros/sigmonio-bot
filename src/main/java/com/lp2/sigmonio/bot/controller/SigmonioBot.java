@@ -64,14 +64,13 @@ public class SigmonioBot extends AbilityBot {
                 .locality(ALL)
                 .input(0)
                 .action(messageContext -> {
+                    ArrayList<String> argument = sigmonioService.sanitizeArguments(messageContext.arguments());
+                    String name = argument.get(0);
+                    String description = argument.get(1);
+
                     switch (messageContext.firstArg()) {
                         case "localization":
-                            ArrayList<String> argument = sigmonioService.sanitizeArguments(messageContext.arguments());
-                            String name = argument.get(0);
-                            String description = argument.get(1);
-
                             if(!sigmonioService.verifyLocalization(name) && sigmonioService.verifyArguments(argument,2)) {
-
                                 sigmonioService.saveLocalization(name, description);
                                 silent.send("Localization has created sucessfuly!", messageContext.chatId());
                             }
