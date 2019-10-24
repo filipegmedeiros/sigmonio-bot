@@ -37,7 +37,7 @@ public class ItemServiceImpl implements ItemService{
     }
 
     @Override
-    public Map<String, Boolean> deleteItem(Long itemId)
+    public Map<String, Boolean> deleteItem(String itemId)
             throws ResourceNotFoundException {
         Item item = findById(itemId);
         itemRepository.delete(item);
@@ -46,7 +46,7 @@ public class ItemServiceImpl implements ItemService{
         return response;
     }
 
-    public ResponseEntity<Item> updateById(Item itemDetails, long itemId) {
+    public ResponseEntity<Item> updateById(Item itemDetails, String itemId) {
 
         Item item = findById(itemId);
         item.setName(itemDetails.getName());
@@ -61,7 +61,7 @@ public class ItemServiceImpl implements ItemService{
     }
 
     @Override
-    public ResponseEntity<Item> findOneById(long itemId) {
+    public ResponseEntity<Item> findOneById(String itemId) {
         Item item = findById(itemId);
         return ResponseEntity.ok().body(item);
     }
@@ -72,7 +72,7 @@ public class ItemServiceImpl implements ItemService{
     }
 
     @Override
-    public Item findById(long itemId) {
+    public Item findById(String itemId) {
         return itemRepository.findById(itemId).orElseThrow(()
                 -> new ResourceNotFoundException("Localization not found for this id: "
                 + itemId));

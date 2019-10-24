@@ -8,11 +8,11 @@ import java.util.Map;
 
 public interface ItemService {
     Item save(Item item);
-    Map<String, Boolean> deleteItem(Long localizationId);
-    ResponseEntity<Item> updateById(Item item, long id);
+    Map<String, Boolean> deleteItem(String localizationId);
+    ResponseEntity<Item> updateById(Item item, String id);
     List<Item> findAll();
-    ResponseEntity<Item> findOneById(long id);
+    ResponseEntity<Item> findOneById(String id);
     List<Item> findItensByLocalization(String name);
     ResponseEntity<Item> findLocalizationByItem(Item item);
-    Item findById(long id);
+    Item findById(String id);
 }

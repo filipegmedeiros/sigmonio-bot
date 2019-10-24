@@ -27,7 +27,7 @@ public class ItemController {
     }
 
     @GetMapping("/item/{id}")
-    public ResponseEntity<Item> getItemById(@PathVariable(value = "id") Long itemId){
+    public ResponseEntity<Item> getItemById(@PathVariable(value = "id") String itemId){
         return itemService.findOneById(itemId);
     }
 
@@ -38,14 +38,14 @@ public class ItemController {
     }
 
     @PutMapping("/item/{id}")
-    public ResponseEntity<Item> updateItem(@PathVariable(value = "id") Long itemId,
+    public ResponseEntity<Item> updateItem(@PathVariable(value = "id") String itemId,
                                            @Valid @RequestBody Item itemDetails){
 
         return itemService.updateById(itemDetails, itemId);
     }
 
     @DeleteMapping("/item/{id}")
-    public Map<String, Boolean> deleteItem(@PathVariable(value = "id") Long itemId){
+    public Map<String, Boolean> deleteItem(@PathVariable(value = "id") String itemId){
         return itemService.deleteItem(itemId);
     }
 }
