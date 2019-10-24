@@ -49,7 +49,7 @@ public class SigmonioServiceImpl implements SigmonioService {
             else {
                 temporaryContent.append(argument);
                 temporaryContent.deleteCharAt(temporaryContent.length() - 1);
-                sanitizedArguments.add(temporaryContent.toString());
+                sanitizedArguments.add(temporaryContent.toString().trim());
                 temporaryContent = new StringBuilder();
             }
 
@@ -89,34 +89,55 @@ public class SigmonioServiceImpl implements SigmonioService {
     }
 
     @Override
-    public Long saveItem(String name, String description,
-                         String LocalizationName, String categoryName){
+    public String saveItem(String name, String description,
+                           String LocalizationName, String categoryName){
         Item item = new Item();
         item.setName(name);
         item.setDescription(description);
         item.setLocalization(localizationService.findByName(LocalizationName));
         item.setCategory(categoryService.findByName(categoryName));
         itemService.save(item);
-        return item.getId();
+        return String.valueOf(item.getId());
     };
 
-
-    public List<Localization> showLocalizations(){
-        return localizationService.findAll();
+    @Override
+    public String showLocalizations(){
+        List<Localization> allItems = localizationService.findAll();
+        StringBuilder content = new StringBuilder();
+        allItems.forEach(localization -> {
+            content.append(showLocalization(localization.getName())).append("\n");
+        });
+        return content.toString();
     }
 
     @Override
-    public List<Category> showCategorys() {
-        return categoryService.findAll();
+    public String showCategories() {
+        List<Category> allItems = categoryService.findAll();
+        StringBuilder content = new StringBuilder();
+        allItems.forEach(category -> {
+            content.append(showCategory(category.getName())).append("\n");
+        });
+        return content.toString();
     }
 
     @Override
-    public List<Item> showItems() {
-        return itemService.findAll();
+    public String showItems() {
+        List<Item> allItems = itemService.findAll();
+        StringBuilder content = new StringBuilder();
+        allItems.forEach(item -> {
+            content.append(showItem(String.valueOf(item.getId()))).append("\n");
+        });
+        return content.toString();
     }
 
-    public List<Item> showItemsByLocalizationName(String name) {
-        return itemService.findItensByLocalization(name);
+    @Override
+    public String showItemsByLocalizationName(String name) {
+        List<Item> allItems = itemService.findItensByLocalization(name);
+        StringBuilder content = new StringBuilder();
+        allItems.forEach(item -> {
+            content.append(showItem(String.valueOf(item.getId()))).append("\n");
+        });
+        return content.toString();
     }
 
     @Override
@@ -142,7 +163,7 @@ public class SigmonioServiceImpl implements SigmonioService {
 
     @Override
     public String showItem(String id) {
-        Item item = itemService.findById(id);
+        Item item = itemService.findById(Integer.parseInt(id));
         return "`—————————ITEM———————`\n" +
                 "*ID:* `" + item.getId() + "`\n" +
                 "*NAME:*`" + item.getName() + "`\n" +
