@@ -12,16 +12,21 @@ public interface SigmonioService {
     boolean verifyArguments(ArrayList<String> arguments , int size);
     ArrayList<String> sanitizeArguments(String[] arguments);
 
-    List<Localization> showLocalization();
-    List<Category> showCategory();
-    List<Item> showItem();
-    List<Item> showItemByLocalizationName(String name);
+    List<Localization> showLocalizations();
+    List<Category> showCategorys();
+    List<Item> showItems();
+    List<Item> showItemsByLocalizationName(String name);
+
+
+    String showLocalization(String name);
+    String showCategory(String name);
+    String showItem(String id);
 
     boolean verifyLocalization(String name);
     boolean verifyCategory(String name);
 
-    void saveLocalization(String name, String description);
-    void saveCategory(String name, String description);
-    void saveItem(String name, String description, String LocalizationName, String categoryName);
+    String saveLocalization(String name, String description);
+    String saveCategory(String name, String description);
+    Long saveItem(String name, String description, String LocalizationName, String categoryName);
 
 }

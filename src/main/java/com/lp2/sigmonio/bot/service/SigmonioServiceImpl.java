@@ -9,6 +9,7 @@ import com.lp2.sigmonio.service.LocalizationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -70,23 +71,25 @@ public class SigmonioServiceImpl implements SigmonioService {
     }
 
     @Override
-    public void saveLocalization(String name, String description) {
+    public String saveLocalization(String name, String description) {
         Localization localization = new Localization();
         localization.setName(name);
         localization.setDescription(description);
         localizationService.save(localization);
+        return localization.getName();
     }
 
     @Override
-    public void saveCategory(String name, String description) {
+    public String saveCategory(String name, String description) {
         Category category = new Category();
         category.setName(name);
         category.setDescription(description);
         categoryService.save(category);
+        return category.getName();
     }
 
     @Override
-    public void saveItem(String name, String description,
+    public Long saveItem(String name, String description,
                          String LocalizationName, String categoryName){
         Item item = new Item();
         item.setName(name);
@@ -94,25 +97,59 @@ public class SigmonioServiceImpl implements SigmonioService {
         item.setLocalization(localizationService.findByName(LocalizationName));
         item.setCategory(categoryService.findByName(categoryName));
         itemService.save(item);
+        return item.getId();
     };
 
 
-    public List<Localization> showLocalization(){
+    public List<Localization> showLocalizations(){
         return localizationService.findAll();
     }
 
     @Override
-    public List<Category> showCategory() {
+    public List<Category> showCategorys() {
         return categoryService.findAll();
     }
 
     @Override
-    public List<Item> showItem() {
+    public List<Item> showItems() {
         return itemService.findAll();
     }
 
-    public List<Item> showItemByLocalizationName(String name) {
+    public List<Item> showItemsByLocalizationName(String name) {
         return itemService.findItensByLocalization(name);
+    }
+
+    @Override
+    public String showLocalization(String name) {
+        Localization localization = localizationService.findByName(name);
+        return "`—————LOCALIZATION—————`\n" +
+                "*ID:* `" + localization.getId() + "`\n" +
+                "*NAME:* `" + localization.getName() + "`\n" +
+                "*DESCRIPTION:* `"+ localization.getDescription() + "`\n" +
+                "`——————————————————————`";
+    }
+
+    @Override
+    public String showCategory(String name) {
+        Category category = categoryService.findByName(name);
+        return "`———————CATEGORY———————`\n" +
+                "*ID:* `" + category.getId() + "`\n" +
+                "*NAME:*` " + category.getName() + "`\n" +
+                "*DESCRIPTION:* `"+ category.getDescription() + "`\n" +
+                "`—————————————————————`";
+    }
+
+
+    @Override
+    public String showItem(String id) {
+        Item item = itemService.findById(id);
+        return "`—————————ITEM———————`\n" +
+                "*ID:* `" + item.getId() + "`\n" +
+                "*NAME:*`" + item.getName() + "`\n" +
+                "*DESCRIPTION:* `"+ item.getDescription() + "`\n" +
+                "*CATEGORY :* `" + item.getCategory().getName() + "`\n" +
+                "*LOCALIZATION :*`" + item.getLocalization().getName() + "`\n" +
+                "`———————————————————`";
     }
 
 
