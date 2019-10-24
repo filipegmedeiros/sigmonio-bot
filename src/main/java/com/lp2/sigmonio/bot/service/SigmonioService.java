@@ -12,10 +12,10 @@ public interface SigmonioService {
     boolean verifyArguments(ArrayList<String> arguments , int size);
     ArrayList<String> sanitizeArguments(String[] arguments);
 
-    List<Localization> showLocalizations();
-    List<Category> showCategorys();
-    List<Item> showItems();
-    List<Item> showItemsByLocalizationName(String name);
+    String showLocalizations();
+    String showCategories();
+    String showItems();
+    String showItemsByLocalizationName(String name);
 
 
     String showLocalization(String name);
@@ -27,6 +27,6 @@ public interface SigmonioService {
 
     String saveLocalization(String name, String description);
     String saveCategory(String name, String description);
-    Long saveItem(String name, String description, String LocalizationName, String categoryName);
+    String saveItem(String name, String description, String LocalizationName, String categoryName);
 
 }
