@@ -19,7 +19,6 @@ public class ItemServiceImpl implements ItemService{
 
     private ItemRepository itemRepository;
     private LocalizationService localizationService;
-    private CategoryService categoryService;
 
     @Autowired
     public ItemServiceImpl(ItemRepository itemRepository,
@@ -27,7 +26,6 @@ public class ItemServiceImpl implements ItemService{
                            CategoryService categoryService) {
         this.itemRepository = itemRepository;
         this.localizationService = localizationService;
-        this.categoryService = categoryService;
     }
 
 
@@ -39,7 +37,7 @@ public class ItemServiceImpl implements ItemService{
     @Override
     public Map<String, Boolean> deleteItem(String itemId)
             throws ResourceNotFoundException {
-        Item item = findById(itemId);
+        Item item = findById(Integer.parseInt(itemId));
         itemRepository.delete(item);
         Map<String, Boolean> response = new HashMap<>();
         response.put("deleted", Boolean.TRUE);
@@ -48,7 +46,7 @@ public class ItemServiceImpl implements ItemService{
 
     public ResponseEntity<Item> updateById(Item itemDetails, String itemId) {
 
-        Item item = findById(itemId);
+        Item item = findById(Integer.parseInt(itemId));
         item.setName(itemDetails.getName());
         item.setDescription(itemDetails.getDescription());
         final Item updatedItem = itemRepository.save(item);
@@ -62,7 +60,7 @@ public class ItemServiceImpl implements ItemService{
 
     @Override
     public ResponseEntity<Item> findOneById(String itemId) {
-        Item item = findById(itemId);
+        Item item = findById(Integer.parseInt(itemId));
         return ResponseEntity.ok().body(item);
     }
 
@@ -72,7 +70,7 @@ public class ItemServiceImpl implements ItemService{
     }
 
     @Override
-    public Item findById(String itemId) {
+    public Item findById(long itemId) {
         return itemRepository.findById(itemId).orElseThrow(()
                 -> new ResourceNotFoundException("Localization not found for this id: "
                 + itemId));

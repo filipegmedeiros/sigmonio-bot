@@ -14,5 +14,5 @@ public interface ItemService {
     ResponseEntity<Item> findOneById(String id);
     List<Item> findItensByLocalization(String name);
     ResponseEntity<Item> findLocalizationByItem(Item item);
-    Item findById(String id);
+    Item findById(long id);
 }
