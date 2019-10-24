@@ -43,32 +43,32 @@ public class SigmonioBot extends AbilityBot {
                 "/register *type* `name`*,* `description`\n" +
                 "/register *item* `name`*,* `description`*,* `localizationName`*,* `categoryName`\n" +
                 "`——————`\n" +
-                "*Example of inputs acceptables:*\n" +
+                "*Example of inputs acceptable:*\n" +
                 "/register *localization*  `Room A309`*,* `It's a study room`\n" +
                 "/register *category* `Computers`*,* `Category of all computers`\n" +
                 "/register *item* `Computer`*,* `An Dell XPS 2015`*,* `Room A309`*,* `Computers`\n" +
                 "`————————————————————————`\n" +
-                "/list *is used to listen all localizations, categorys, items or all items by localization*\n" +
+                "/list *is used to list all localizations, categories, items or all items by localization*\n" +
                 "/list *type*\n" +
                 "/list *type* `where`*,*\n" +
                 "`——————`\n" +
-                "*Example of inputs acceptables:*\n" +
+                "*Example of inputs acceptable:*\n" +
                 "/list *localizations*\n" +
-                "/list *categorys*\n" +
+                "/list *categories*\n" +
                 "/list *items*\n" +
                 "/list *items* `Room A309`*,*\n" +
                 "`————————————————————————`\n" +
-                "/search *is used to listen a UNIQUE localization, category or item*\n" +
+                "/search *is used to list a UNIQUE localization, category or item*\n" +
                 "/search *type* `uniqueName`\n" +
                 "/search *type* `uniqueId`\n" +
                 "`——————`\n" +
                 "\n" +
-                "*Example of inputs acceptables:*\n" +
+                "*Example of inputs acceptable:*\n" +
                 "/search *localization* `Room A309`\n" +
                 "/search *category* `Computers`\n" +
                 "/search *item* `359`\n" +
                 "`————————————————————————`\n" +
-                "/relatory *will generate an report of database*\n" +
+                "/report *will generate an report of database*\n" +
                 "`————————————————————————`\n" +
                 "\n" +
                 "*OBS: arguments its separate by comma (,) attention to that!*";
@@ -81,7 +81,7 @@ public class SigmonioBot extends AbilityBot {
                 .privacy(PUBLIC)  // Who can use this command
                 .locality(ALL) // Where this command can be use
                 .input(0) // Number of required arguments
-                .action(messageContext -> silent.sendMd("*Hello, here are the commands of mine!* \n" + commands, messageContext.chatId())) // Action of the command
+                .action(messageContext -> silent.sendMd("*Hello, these are my commands* \n" + commands, messageContext.chatId())) // Action of the command
                 .build();
     }
 
@@ -94,42 +94,64 @@ public class SigmonioBot extends AbilityBot {
                 .input(0)
                 .action(messageContext -> {
                     ArrayList<String> argument = sigmonioService.sanitizeArguments(messageContext.arguments());
-                    String name = argument.get(0);
-                    String description = argument.get(1);
+                    String name = "";
+                    String description = "";
+                    String localizationName = "";
+                    String categoryName = "";
 
                     switch (messageContext.firstArg()) {
                         case "localization":
-                            if(!sigmonioService.verifyLocalization(name)
-                                    && sigmonioService.verifyArguments(argument,2)) {
-                                silent.sendMd("*Localization* `has created sucessfuly with name: `" + sigmonioService.saveLocalization(name, description), messageContext.chatId());
-                                silent.sendMd("*NOTE:* `This` *name* `is` *unique* , `so keep this in mind if you want to edit or view this localization specifically.`", messageContext.chatId());
+                            if (!sigmonioService.verifyArguments(argument,2)) {
+                                silent.sendMd("Verify your arguments, look this example:\n " +
+                                        "/register *localization*  `Room A309`*,* `It's a study room`", messageContext.chatId());
+                            }
+                            name = argument.get(0);
+                            description = argument.get(1);
+                            if (sigmonioService.verifyLocalization(name)) {
+                                silent.send("Localization already exists" , messageContext.chatId());
                             }
                             else {
-                                silent.send("that " + name + " already exists", messageContext.chatId());
+                                silent.sendMd("*Localization* `has created successfully with name: `" + sigmonioService.saveLocalization(name, description), messageContext.chatId());
+                                silent.sendMd("*NOTE:* `This` *name* `is` *unique* , `if you forgotten use` /list", messageContext.chatId());
                             }
                             break;
 
                         case "category":
-                            if(!sigmonioService.verifyCategory(name)
-                                    && sigmonioService.verifyArguments(argument,2)) {
-                                silent.sendMd("*Category* `has created sucessfuly with name: `" + sigmonioService.saveCategory(name, description), messageContext.chatId());
-                                silent.sendMd("*NOTE:* `This` *name* `is` *unique* , `so keep this in mind if you want to edit or view this category specifically.`", messageContext.chatId());
+                            if (!sigmonioService.verifyArguments(argument,2)) {
+                                silent.sendMd("Verify your arguments, look this example:\n " +
+                                        "/register *category* `Computers`*,* `Category of all computers`", messageContext.chatId());
+                            }
+                            name = argument.get(0);
+                            description = argument.get(1);
+                            if (sigmonioService.verifyCategory(name)) {
+                                silent.send("Category already exists" , messageContext.chatId());
                             }
                             else {
-                                silent.send("that " + name + " already exists", messageContext.chatId());
+                                silent.sendMd("*Category* `has created successfully with name: `" + sigmonioService.saveCategory(name, description), messageContext.chatId());
+                                silent.sendMd("*NOTE:* `This` *name* `is` *unique* , `if you forgotten use` /list", messageContext.chatId());
                             }
                             break;
                         case "item":
-                            String localizationName = argument.get(2);
-                            String categoryName = argument.get(3);
-                            if(sigmonioService.verifyLocalization(localizationName)
-                                    && sigmonioService.verifyCategory(categoryName)
-                                    && sigmonioService.verifyArguments(argument,4)) {
-                                silent.sendMd("*Item* `has created sucessfuly with ID: `" + sigmonioService.saveItem(name, description,localizationName,categoryName), messageContext.chatId());
-                                silent.sendMd("*NOTE:* `This` *ID* `is` *unique* , `so keep this in mind if you want to edit or view this item specifically.`", messageContext.chatId());
+                            if (!sigmonioService.verifyArguments(argument,4)) {
+                                silent.sendMd("Verify your arguments, look this example:\n " +
+                                        "/register *category* `Computers`*,* `Category of all computers`", messageContext.chatId());
+                            }
+                            name = argument.get(0);
+                            description = argument.get(1);
+                            localizationName = argument.get(2);
+                            categoryName = argument.get(3);
+
+                            if (!sigmonioService.verifyLocalization(localizationName))
+                            {
+                                silent.send("Localization not found" , messageContext.chatId());
+
+                            }
+                            if (!sigmonioService.verifyCategory(categoryName)) {
+                                silent.send("Category not found" , messageContext.chatId());
                             }
                             else {
-                                silent.send("that " + name + " already exists", messageContext.chatId());
+                                silent.sendMd("*Item* `has created successfully with `*ID: *`" + sigmonioService.saveItem(name, description, localizationName, categoryName) + "`", messageContext.chatId());
+                                silent.sendMd("*NOTE:* `This` *ID* `is` *unique* , `if you forgotten use` /list", messageContext.chatId());
                             }
                             break;
 
@@ -144,27 +166,27 @@ public class SigmonioBot extends AbilityBot {
     public Ability list() {
         return Ability.builder()
                 .name("list") // Command
-                .info("list all locations, categorys, items or items of localization") // info of command
+                .info("list all locations, categories, items or items of localization") // info of command
                 .privacy(PUBLIC)  // Who can use this command
                 .locality(ALL) // Where this command can be use
                 .input(0) // Number of required arguments
                 .action(messageContext -> {
                     switch (messageContext.firstArg()) {
                         case "localizations":
-                            silent.send(sigmonioService.showLocalizations().toString(),messageContext.chatId());
+                            silent.sendMd(sigmonioService.showLocalizations(), messageContext.chatId());
                             break;
 
-                        case "categorys":
-                            silent.send(sigmonioService.showCategorys().toString(),messageContext.chatId());
+                        case "categories":
+                            silent.sendMd(sigmonioService.showCategories(), messageContext.chatId());
 
                             break;
                         case "items":
-                            silent.send(sigmonioService.showItems().toString(),messageContext.chatId());
+                            silent.sendMd(sigmonioService.showItems(), messageContext.chatId());
                             break;
 
 
                         default:
-                            silent.send("Invalid option, use localization, category or item", messageContext.chatId());
+                            silent.send("Invalid option, use localizations, categories or items", messageContext.chatId());
                             break;
                     }
                 })
