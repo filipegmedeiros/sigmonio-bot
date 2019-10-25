@@ -27,9 +27,7 @@ public class SigmonioBot extends AbilityBot {
     @Autowired
     protected SigmonioBot(SigmonioService sigmonioService, Environment env) {
         super(env.getProperty("bot.token"), env.getProperty("bot.username"));
-
         this.sigmonioService = sigmonioService;
-        setCommands();
     }
 
     @Override
@@ -37,8 +35,11 @@ public class SigmonioBot extends AbilityBot {
         return 432232268;
     }
 
-    private void setCommands() {
-        this.commands = "`————————————————————————`\n" +
+    private static String hello = "`I'm a heritage robot! With me you can add locations, categories and items!\n" +
+            "Also, search, list and more!`\n" +
+            "*To see how I work, use /commands  ^^*";
+
+    private static String commandsList = "`————————————————————————`\n" +
                 "/register *is used to register one localization, category or item.*\n" +
                 "/register *type* `name`*,* `description`\n" +
                 "/register *item* `name`*,* `description`*,* `localizationName`*,* `categoryName`\n" +
@@ -74,7 +75,6 @@ public class SigmonioBot extends AbilityBot {
                 "`————————————————————————`\n" +
                 "\n" +
                 "*OBS: arguments its separate by comma (,) attention to that!*";
-    }
 
     public Ability start() {
         return Ability.builder()
@@ -83,9 +83,21 @@ public class SigmonioBot extends AbilityBot {
                 .privacy(PUBLIC)  // Who can use this command
                 .locality(ALL) // Where this command can be use
                 .input(0) // Number of required arguments
-                .action(messageContext -> silent.sendMd("*Hello, these are my commands* \n" + commands, messageContext.chatId())) // Action of the command
+                .action(messageContext -> silent.sendMd("*hello friend "+ messageContext.user().getFirstName() +" !* \n" + hello, messageContext.chatId())) // Action of the command
                 .build();
     }
+
+    public Ability commands() {
+        return Ability.builder()
+                .name("commands") // Command
+                .info("commands") // info of command
+                .privacy(PUBLIC)  // Who can use this command
+                .locality(ALL) // Where this command can be use
+                .input(0) // Number of required arguments
+                .action(messageContext -> silent.sendMd("*Hello, these are my commands* \n" + commandsList, messageContext.chatId())) // Action of the command
+                .build();
+    }
+
 
     public Ability register() {
         return Ability.builder()
@@ -129,6 +141,7 @@ public class SigmonioBot extends AbilityBot {
                                 silent.send("Category already exists" , messageContext.chatId());
                             }
                             else {
+
                                 silent.sendMd("*Category* `has created successfully with name: `" + sigmonioService.saveCategory(name, description), messageContext.chatId());
                                 silent.sendMd("*NOTE:* `This` *name* `is` *unique* , `if you forgotten use` /list", messageContext.chatId());
                             }
