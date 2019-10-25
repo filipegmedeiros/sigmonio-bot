@@ -53,6 +53,11 @@ public class LocalizationServiceImpl implements LocalizationService{
     }
 
     @Override
+    public List<Localization> findByNameContains(String name) {
+        return localizationRepository.findAllByNameContains(name);
+    }
+
+    @Override
     public boolean exists(String name) {
         return localizationRepository.existsByName(name);
     }
