@@ -150,6 +150,27 @@ public class SigmonioServiceImpl implements SigmonioService {
         return content.toString();
     }
 
+
+    @Override
+    public String listOfLocalizationsByNameContains(String name){
+        List<Localization> allLocalizations = localizationService.findByNameContains(name);
+        StringBuilder content = new StringBuilder();
+        allLocalizations.forEach(localization -> {
+            content.append(localization.getName()).append(", ");
+        });
+        return content.toString();
+    }
+
+    @Override
+    public String listOfCategoriesByNameContains(String name){
+        List<Category> allCategories = categoryService.findByNameContains(name);
+        StringBuilder content = new StringBuilder();
+        allCategories.forEach(category -> {
+            content.append(category.getName()).append(", ");
+        });
+        return content.toString();
+    }
+
     @Override
     public String showLocalization(String name) {
         Localization localization = localizationService.findByName(name);

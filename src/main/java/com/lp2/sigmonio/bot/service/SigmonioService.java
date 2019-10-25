@@ -18,6 +18,8 @@ public interface SigmonioService {
     String showItemsByLocalizationName(String name);
     String showItemsBySomeDescription(String someDescription);
 
+    String listOfLocalizationsByNameContains(String name);
+    String listOfCategoriesByNameContains(String name);
 
     String showLocalization(String name);
     String showCategory(String name);

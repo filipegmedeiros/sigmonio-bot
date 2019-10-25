@@ -143,13 +143,17 @@ public class SigmonioBot extends AbilityBot {
                             localizationName = argument.get(2);
                             categoryName = argument.get(3);
 
-                            if (!sigmonioService.verifyLocalization(localizationName))
-                            {
-                                silent.send("Localization not found" , messageContext.chatId());
-
+                            if (!sigmonioService.verifyLocalization(localizationName)){
+                                silent.sendMd("*Localization not found :(*" , messageContext.chatId());
+                                String listOfContainsLocalizationName = sigmonioService.listOfLocalizationsByNameContains(localizationName);
+                                if(!listOfContainsLocalizationName.isEmpty() || !listOfContainsLocalizationName.equals(""))
+                                    silent.sendMd("Didn't you mean one of these? `" + listOfContainsLocalizationName + "`", messageContext.chatId());
                             }
                             if (!sigmonioService.verifyCategory(categoryName)) {
-                                silent.send("Category not found" , messageContext.chatId());
+                                silent.sendMd("*Category not found :(*" , messageContext.chatId());
+                                String listOfContainsCategoryName = sigmonioService.listOfCategoriesByNameContains(categoryName);
+                                if(!listOfContainsCategoryName.isEmpty() || !listOfContainsCategoryName.equals("") )
+                                    silent.sendMd("Didn't you mean one of these? `" + listOfContainsCategoryName + "`", messageContext.chatId());
                             }
                             else {
                                 silent.sendMd("*Item* `has created successfully with `*ID: *`" + sigmonioService.saveItem(name, description, localizationName, categoryName) + "`", messageContext.chatId());
