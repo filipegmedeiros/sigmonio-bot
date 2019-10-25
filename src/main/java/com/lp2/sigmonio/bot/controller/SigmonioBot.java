@@ -50,13 +50,15 @@ public class SigmonioBot extends AbilityBot {
                 "`————————————————————————`\n" +
                 "/list *is used to list all localizations, categories, items or all items by localization*\n" +
                 "/list *type*\n" +
-                "/list *type* `where`*,*\n" +
+                "/list *item by localization*, `where`\n" +
+                "/list *item with description*, `partial description`\n" +
                 "`——————`\n" +
                 "*Example of inputs acceptable:*\n" +
                 "/list *localizations*\n" +
                 "/list *categories*\n" +
                 "/list *items*\n" +
-                "/list *items* `Room A309`*,*\n" +
+                "/list *items by localization* `Room A309`*,*\n" +
+                "/list *items with description* `XPS 2015`*,*\n" +
                 "`————————————————————————`\n" +
                 "/search *is used to list a UNIQUE localization, category or item*\n" +
                 "/search *type* `uniqueName`\n" +
@@ -171,6 +173,7 @@ public class SigmonioBot extends AbilityBot {
                 .locality(ALL) // Where this command can be use
                 .input(0) // Number of required arguments
                 .action(messageContext -> {
+                    String localizationName = "";
                     String partialDescription = "";
                     switch (messageContext.firstArg()) {
 
@@ -185,9 +188,15 @@ public class SigmonioBot extends AbilityBot {
                         case "items":
                             if(messageContext.arguments().length > 1){
                                 ArrayList<String> argument = sigmonioService.sanitizeArguments(messageContext.arguments());
-                                partialDescription = argument.get(0);
-                                silent.sendMd(sigmonioService.showItemsBySomeDescription(partialDescription), messageContext.chatId());
+                                if( argument.get(0).equals("with description")) {
+                                    partialDescription = argument.get(1);
+                                    silent.sendMd(sigmonioService.showItemsBySomeDescription(partialDescription), messageContext.chatId());
+                                }
+                                if( argument.get(0).equals("by localization")){
+                                    localizationName = argument.get(1);
+                                    silent.sendMd(sigmonioService.showItemsByLocalizationName(localizationName), messageContext.chatId());
 
+                                }
                             }else{
                                 silent.sendMd(sigmonioService.showItems(), messageContext.chatId());
                             }

@@ -176,11 +176,11 @@ public class SigmonioServiceImpl implements SigmonioService {
         Item item = itemService.findById(Integer.parseInt(id));
         return "`—————————ITEM———————`\n" +
                 "*ID:* `" + item.getId() + "`\n" +
-                "*NAME:*`" + item.getName() + "`\n" +
+                "*NAME:* `" + item.getName() + "`\n" +
                 "*DESCRIPTION:* `"+ item.getDescription() + "`\n" +
-                "*CATEGORY :* `" + item.getCategory().getName() + "`\n" +
-                "*LOCALIZATION :*`" + item.getLocalization().getName() + "`\n" +
-                "`———————————————————`";
+                "*CATEGORY:* `" + item.getCategory().getName() + "`\n" +
+                "*LOCALIZATION: *`" + item.getLocalization().getName() + "`\n" +
+                "`————————————————————`";
     }
 
 
