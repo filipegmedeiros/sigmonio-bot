@@ -14,6 +14,8 @@ public interface CategoryService {
     ResponseEntity<Category> findOneById(long id);
     Category findById(long id);
 
+    List<Category> findByNameContains(String name);
+
     boolean exists(String name);
 
     Category findByName(String name);

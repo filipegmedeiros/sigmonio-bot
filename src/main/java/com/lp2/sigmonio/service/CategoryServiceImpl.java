@@ -63,6 +63,12 @@ public class CategoryServiceImpl implements CategoryService{
     }
 
     @Override
+    public List<Category> findByNameContains(String name) {
+        return categoryRepository.findAllByNameContains(name);
+
+    }
+
+    @Override
     public boolean exists(String name) {
         return categoryRepository.existsByName(name);
     }
