@@ -77,7 +77,14 @@ public class ItemServiceImpl implements ItemService{
     }
 
     @Override
-    public List<Item> findItensByLocalization(String name) {
+    public List<Item> findItemsByDescription(String someDescription) {
+        return itemRepository.findAllByDescriptionContains(someDescription);
+    }
+
+    @Override
+    public List<Item> findItemsByLocalization(String name) {
         return itemRepository.findAllByLocalization(localizationService.findByName(name));
     }
+
+
 }

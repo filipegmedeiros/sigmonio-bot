@@ -171,7 +171,9 @@ public class SigmonioBot extends AbilityBot {
                 .locality(ALL) // Where this command can be use
                 .input(0) // Number of required arguments
                 .action(messageContext -> {
+                    String partialDescription = "";
                     switch (messageContext.firstArg()) {
+
                         case "localizations":
                             silent.sendMd(sigmonioService.showLocalizations(), messageContext.chatId());
                             break;
@@ -181,7 +183,15 @@ public class SigmonioBot extends AbilityBot {
 
                             break;
                         case "items":
-                            silent.sendMd(sigmonioService.showItems(), messageContext.chatId());
+                            if(messageContext.arguments().length > 1){
+                                ArrayList<String> argument = sigmonioService.sanitizeArguments(messageContext.arguments());
+                                partialDescription = argument.get(0);
+                                silent.sendMd(sigmonioService.showItemsBySomeDescription(partialDescription), messageContext.chatId());
+
+                            }else{
+                                silent.sendMd(sigmonioService.showItems(), messageContext.chatId());
+                            }
+
                             break;
 
 

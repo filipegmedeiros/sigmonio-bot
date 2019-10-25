@@ -132,7 +132,17 @@ public class SigmonioServiceImpl implements SigmonioService {
 
     @Override
     public String showItemsByLocalizationName(String name) {
-        List<Item> allItems = itemService.findItensByLocalization(name);
+        List<Item> allItems = itemService.findItemsByLocalization(name);
+        StringBuilder content = new StringBuilder();
+        allItems.forEach(item -> {
+            content.append(showItem(String.valueOf(item.getId()))).append("\n");
+        });
+        return content.toString();
+    }
+
+    @Override
+    public String showItemsBySomeDescription(String someDescription) {
+        List<Item> allItems = itemService.findItemsByDescription(someDescription);
         StringBuilder content = new StringBuilder();
         allItems.forEach(item -> {
             content.append(showItem(String.valueOf(item.getId()))).append("\n");
