@@ -19,6 +19,7 @@ public class ItemServiceImpl implements ItemService{
 
     private ItemRepository itemRepository;
     private LocalizationService localizationService;
+    private CategoryService categoryService;
 
     @Autowired
     public ItemServiceImpl(ItemRepository itemRepository,
@@ -26,6 +27,7 @@ public class ItemServiceImpl implements ItemService{
                            CategoryService categoryService) {
         this.itemRepository = itemRepository;
         this.localizationService = localizationService;
+        this.categoryService = categoryService;
     }
 
 
@@ -86,5 +88,9 @@ public class ItemServiceImpl implements ItemService{
         return itemRepository.findAllByLocalization(localizationService.findByName(name));
     }
 
+    @Override
+    public List<Item> findItemsByCategory(String name) {
+        return itemRepository.findAllByCategory(categoryService.findByName(name));
+    }
 
 }

@@ -20,7 +20,49 @@ import static org.telegram.abilitybots.api.objects.Privacy.PUBLIC;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Component
 public class SigmonioBot extends AbilityBot {
-    String commands;
+
+    private static String hello = "`I'm a heritage robot! With me you can add locations, categories and items!\n" +
+            "Also, search, list and more!`\n" +
+            "*To see how I work, use /commands  ^^*";
+
+    private static String commandsList = "`————————————————————————`\n" +
+            "/register *is used to register one localization, category or item.*\n" +
+            "/register *type* `name`*,* `description`\n" +
+            "/register *item* `name`*,* `description`*,* `localizationName`*,* `categoryName`\n" +
+            "`——————`\n" +
+            "*Example of inputs acceptable:*\n" +
+            "/register *localization*  `Room A309`*,* `It's a study room`\n" +
+            "/register *category* `Computers`*,* `Category of all computers`\n" +
+            "/register *item* `Computer`*,* `An Dell XPS 2015`*,* `Room A309`*,* `Computers`\n" +
+            "`————————————————————————`\n" +
+            "/list *is used to list all localizations, categories, items or all items by localization*\n" +
+            "/list *type*\n" +
+            "/list *items by localization*, `where`\n" +
+            "/list *items by category*, `where`\n" +
+            "/list *items by description*, `partial description`\n" +
+            "`——————`\n" +
+            "*Example of inputs acceptable:*\n" +
+            "/list *localizations*\n" +
+            "/list *categories*\n" +
+            "/list *items*\n" +
+            "/list *items by localization,* `Room A309`\n" +
+            "/list *items by category,* `Computers`\n" +
+            "/list *items by description,* `XPS 2015`\n" +
+            "`————————————————————————`\n" +
+            "/search *is used to list a UNIQUE localization, category or item*\n" +
+            "/search *type* `uniqueName`\n" +
+            "/search *type* `uniqueId`\n" +
+            "`——————`\n" +
+            "\n" +
+            "*Example of inputs acceptable:*\n" +
+            "/search *localization* `Room A309`\n" +
+            "/search *category* `Computers`\n" +
+            "/search *item* `359`\n" +
+            "`————————————————————————`\n" +
+            "/report *will generate an report of database*\n" +
+            "`————————————————————————`\n" +
+            "\n" +
+            "*OBS: arguments its separate by comma (,) attention to that!*";
 
     private SigmonioService sigmonioService;
 
@@ -35,47 +77,6 @@ public class SigmonioBot extends AbilityBot {
         return 432232268;
     }
 
-    private static String hello = "`I'm a heritage robot! With me you can add locations, categories and items!\n" +
-            "Also, search, list and more!`\n" +
-            "*To see how I work, use /commands  ^^*";
-
-    private static String commandsList = "`————————————————————————`\n" +
-                "/register *is used to register one localization, category or item.*\n" +
-                "/register *type* `name`*,* `description`\n" +
-                "/register *item* `name`*,* `description`*,* `localizationName`*,* `categoryName`\n" +
-                "`——————`\n" +
-                "*Example of inputs acceptable:*\n" +
-                "/register *localization*  `Room A309`*,* `It's a study room`\n" +
-                "/register *category* `Computers`*,* `Category of all computers`\n" +
-                "/register *item* `Computer`*,* `An Dell XPS 2015`*,* `Room A309`*,* `Computers`\n" +
-                "`————————————————————————`\n" +
-                "/list *is used to list all localizations, categories, items or all items by localization*\n" +
-                "/list *type*\n" +
-                "/list *item by localization*, `where`\n" +
-                "/list *item with description*, `partial description`\n" +
-                "`——————`\n" +
-                "*Example of inputs acceptable:*\n" +
-                "/list *localizations*\n" +
-                "/list *categories*\n" +
-                "/list *items*\n" +
-                "/list *items by localization* `Room A309`*,*\n" +
-                "/list *items with description* `XPS 2015`*,*\n" +
-                "`————————————————————————`\n" +
-                "/search *is used to list a UNIQUE localization, category or item*\n" +
-                "/search *type* `uniqueName`\n" +
-                "/search *type* `uniqueId`\n" +
-                "`——————`\n" +
-                "\n" +
-                "*Example of inputs acceptable:*\n" +
-                "/search *localization* `Room A309`\n" +
-                "/search *category* `Computers`\n" +
-                "/search *item* `359`\n" +
-                "`————————————————————————`\n" +
-                "/report *will generate an report of database*\n" +
-                "`————————————————————————`\n" +
-                "\n" +
-                "*OBS: arguments its separate by comma (,) attention to that!*";
-
     public Ability start() {
         return Ability.builder()
                 .name("start") // Command
@@ -83,7 +84,7 @@ public class SigmonioBot extends AbilityBot {
                 .privacy(PUBLIC)  // Who can use this command
                 .locality(ALL) // Where this command can be use
                 .input(0) // Number of required arguments
-                .action(messageContext -> silent.sendMd("*hello friend "+ messageContext.user().getFirstName() +" !* \n" + hello, messageContext.chatId())) // Action of the command
+                .action(messageContext -> silent.sendMd("*hello friend " + messageContext.user().getFirstName() + " !* \n" + hello, messageContext.chatId())) // Action of the command
                 .build();
     }
 
@@ -108,46 +109,44 @@ public class SigmonioBot extends AbilityBot {
                 .input(0)
                 .action(messageContext -> {
                     ArrayList<String> argument = sigmonioService.sanitizeArguments(messageContext.arguments());
-                    String name = "";
-                    String description = "";
-                    String localizationName = "";
-                    String categoryName = "";
+                    String name;
+                    String description;
+                    String localizationName;
+                    String categoryName;
 
                     switch (messageContext.firstArg()) {
                         case "localization":
-                            if (!sigmonioService.verifyArguments(argument,2)) {
+                            if (!sigmonioService.verifyArguments(argument, 2)) {
                                 silent.sendMd("Verify your arguments, look this example:\n " +
                                         "/register *localization*  `Room A309`*,* `It's a study room`", messageContext.chatId());
                             }
                             name = argument.get(0);
                             description = argument.get(1);
                             if (sigmonioService.verifyLocalization(name)) {
-                                silent.send("Localization already exists" , messageContext.chatId());
-                            }
-                            else {
+                                silent.send("Localization already exists", messageContext.chatId());
+                            } else {
                                 silent.sendMd("*Localization* `has created successfully with name: `" + sigmonioService.saveLocalization(name, description), messageContext.chatId());
                                 silent.sendMd("*NOTE:* `This` *name* `is` *unique* , `if you forgotten use` /list", messageContext.chatId());
                             }
                             break;
 
                         case "category":
-                            if (!sigmonioService.verifyArguments(argument,2)) {
+                            if (!sigmonioService.verifyArguments(argument, 2)) {
                                 silent.sendMd("Verify your arguments, look this example:\n " +
                                         "/register *category* `Computers`*,* `Category of all computers`", messageContext.chatId());
                             }
                             name = argument.get(0);
                             description = argument.get(1);
                             if (sigmonioService.verifyCategory(name)) {
-                                silent.send("Category already exists" , messageContext.chatId());
-                            }
-                            else {
+                                silent.send("Category already exists", messageContext.chatId());
+                            } else {
 
                                 silent.sendMd("*Category* `has created successfully with name: `" + sigmonioService.saveCategory(name, description), messageContext.chatId());
                                 silent.sendMd("*NOTE:* `This` *name* `is` *unique* , `if you forgotten use` /list", messageContext.chatId());
                             }
                             break;
                         case "item":
-                            if (!sigmonioService.verifyArguments(argument,4)) {
+                            if (!sigmonioService.verifyArguments(argument, 4)) {
                                 silent.sendMd("Verify your arguments, look this example:\n " +
                                         "/register *category* `Computers`*,* `Category of all computers`", messageContext.chatId());
                             }
@@ -156,19 +155,18 @@ public class SigmonioBot extends AbilityBot {
                             localizationName = argument.get(2);
                             categoryName = argument.get(3);
 
-                            if (!sigmonioService.verifyLocalization(localizationName)){
-                                silent.sendMd("*Localization not found :(*" , messageContext.chatId());
+                            if (!sigmonioService.verifyLocalization(localizationName)) {
+                                silent.sendMd("*Localization not found :(*", messageContext.chatId());
                                 String listOfContainsLocalizationName = sigmonioService.listOfLocalizationsByNameContains(localizationName);
-                                if(!listOfContainsLocalizationName.isEmpty() || !listOfContainsLocalizationName.equals(""))
+                                if (!listOfContainsLocalizationName.isEmpty() || !listOfContainsLocalizationName.equals(""))
                                     silent.sendMd("Didn't you mean one of these? `" + listOfContainsLocalizationName + "`", messageContext.chatId());
                             }
                             if (!sigmonioService.verifyCategory(categoryName)) {
-                                silent.sendMd("*Category not found :(*" , messageContext.chatId());
+                                silent.sendMd("*Category not found :(*", messageContext.chatId());
                                 String listOfContainsCategoryName = sigmonioService.listOfCategoriesByNameContains(categoryName);
-                                if(!listOfContainsCategoryName.isEmpty() || !listOfContainsCategoryName.equals("") )
+                                if (!listOfContainsCategoryName.isEmpty() || !listOfContainsCategoryName.equals(""))
                                     silent.sendMd("Didn't you mean one of these? `" + listOfContainsCategoryName + "`", messageContext.chatId());
-                            }
-                            else {
+                            } else {
                                 silent.sendMd("*Item* `has created successfully with `*ID: *`" + sigmonioService.saveItem(name, description, localizationName, categoryName) + "`", messageContext.chatId());
                                 silent.sendMd("*NOTE:* `This` *ID* `is` *unique* , `if you forgotten use` /list", messageContext.chatId());
                             }
@@ -190,8 +188,9 @@ public class SigmonioBot extends AbilityBot {
                 .locality(ALL) // Where this command can be use
                 .input(0) // Number of required arguments
                 .action(messageContext -> {
-                    String localizationName = "";
-                    String partialDescription = "";
+                    String localizationName;
+                    String categoryName;
+                    String partialDescription;
                     switch (messageContext.firstArg()) {
 
                         case "localizations":
@@ -203,23 +202,23 @@ public class SigmonioBot extends AbilityBot {
 
                             break;
                         case "items":
-                            if(messageContext.arguments().length > 1){
+                            if (messageContext.arguments().length > 1) {
                                 ArrayList<String> argument = sigmonioService.sanitizeArguments(messageContext.arguments());
-                                if( argument.get(0).equals("with description")) {
+                                if (argument.get(0).equals("by description")) {
                                     partialDescription = argument.get(1);
                                     silent.sendMd(sigmonioService.showItemsBySomeDescription(partialDescription), messageContext.chatId());
                                 }
-                                if( argument.get(0).equals("by localization")){
+                                if (argument.get(0).equals("by localization")) {
                                     localizationName = argument.get(1);
                                     silent.sendMd(sigmonioService.showItemsByLocalizationName(localizationName), messageContext.chatId());
-
                                 }
-                            }else{
+                                if (argument.get(0).equals("by category")) {
+                                    categoryName = argument.get(1);
+                                    silent.sendMd(sigmonioService.showItemsByCategoryName(categoryName), messageContext.chatId());
+                                }
+                            } else
                                 silent.sendMd(sigmonioService.showItems(), messageContext.chatId());
-                            }
-
                             break;
-
 
                         default:
                             silent.send("Invalid option, use localizations, categories or items", messageContext.chatId());
@@ -241,15 +240,15 @@ public class SigmonioBot extends AbilityBot {
                     String name = argument.get(0);
                     switch (messageContext.firstArg()) {
                         case "localization":
-                            silent.sendMd(sigmonioService.showLocalization(name),messageContext.chatId());
+                            silent.sendMd(sigmonioService.showLocalization(name), messageContext.chatId());
                             break;
 
                         case "category":
-                            silent.sendMd(sigmonioService.showCategory(name),messageContext.chatId());
+                            silent.sendMd(sigmonioService.showCategory(name), messageContext.chatId());
 
                             break;
                         case "item":
-                            silent.sendMd(sigmonioService.showItem(name),messageContext.chatId());
+                            silent.sendMd(sigmonioService.showItem(name), messageContext.chatId());
                             break;
 
 
