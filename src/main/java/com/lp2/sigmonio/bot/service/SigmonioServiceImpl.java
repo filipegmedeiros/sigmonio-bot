@@ -6,6 +6,7 @@ import com.lp2.sigmonio.model.Localization;
 import com.lp2.sigmonio.service.CategoryService;
 import com.lp2.sigmonio.service.ItemService;
 import com.lp2.sigmonio.service.LocalizationService;
+import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -179,6 +180,52 @@ public class SigmonioServiceImpl implements SigmonioService {
             content.append(category.getName()).append(", ");
         });
         return content.toString();
+    }
+
+    public String showReport() {
+        StringBuilder content = new StringBuilder();
+        List<Item> allItems = itemService.findAll();
+        List<Category> categoryList = new ArrayList<Category>();
+        List<Localization> localizationList = new ArrayList<Localization>();
+
+        allItems.forEach(item -> {
+            if (!localizationList.contains(item.getLocalization()))
+                localizationList.add(item.getLocalization());
+        });
+
+        for(Localization localization : localizationList){
+
+            content.append("\n`—————LOCALIZATION—————`\n")
+                    .append(localization.getName())
+                    .append("\n`——————————————————————`\n");
+
+            List<Item> itemsOfThatLocalization = itemService.findItemsByLocalization(localization.getName());
+
+            itemsOfThatLocalization.forEach(item -> {
+                if (!categoryList.contains(item.getCategory()))
+                    categoryList.add(item.getCategory());
+            });
+
+            for (Category category : categoryList) {
+                content.append("`CATEGORY`\n")
+                        .append(category.getName())
+                        .append("\n`—————————`\n");
+
+                itemsOfThatLocalization.forEach(item -> {
+                    if(item.getCategory().getName().equals(category.getName())) {
+                        content.append("*ID:* ")
+                                .append(item.getId())
+                                .append(", *Name:* ")
+                                .append(item.getName()).append("\n");
+                    }
+                });
+
+            }
+            itemsOfThatLocalization.clear();
+            categoryList.clear();
+        }
+        return content.toString();
+
     }
 
     @Override

@@ -260,4 +260,16 @@ public class SigmonioBot extends AbilityBot {
                 .build();
     }
 
+    public Ability relatorio() {
+        return Ability.builder()
+                .name("relatorio") // Command
+                .info("relatorio") // info of command
+                .privacy(PUBLIC)  // Who can use this command
+                .locality(ALL) // Where this command can be use
+                .input(0) // Number of required arguments
+                .action(messageContext -> silent.sendMd( sigmonioService.showReport(), messageContext.chatId()))
+                .build();
+    }
+
+
 }
