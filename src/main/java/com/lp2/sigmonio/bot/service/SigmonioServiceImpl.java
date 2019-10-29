@@ -90,17 +90,16 @@ public class SigmonioServiceImpl implements SigmonioService {
     @Override
     public String showReview() {
         StringBuilder content = new StringBuilder();
-        List<Item> allItems = itemService.findAll();
-        List<Category> categoryList = new ArrayList<Category>();
         List<Localization> localizationList = new ArrayList<Localization>();
+        List<Category> categoryList = new ArrayList<Category>();
+        List<Item> allItems = itemService.findAll();
 
         allItems.forEach(item -> {
             if (!localizationList.contains(item.getLocalization()))
                 localizationList.add(item.getLocalization());
         });
 
-        for(Localization localization : localizationList){
-
+        localizationList.forEach(localization -> {
             content.append("\n`—————LOCALIZATION—————`\n")
                     .append(localization.getName())
                     .append("\n`——————————————————————`\n");
@@ -112,7 +111,7 @@ public class SigmonioServiceImpl implements SigmonioService {
                     categoryList.add(item.getCategory());
             });
 
-            for (Category category : categoryList) {
+            categoryList.forEach(category -> {
                 content.append("`CATEGORY`\n")
                         .append(category.getName())
                         .append("\n`—————————`\n");
@@ -125,11 +124,11 @@ public class SigmonioServiceImpl implements SigmonioService {
                                 .append(item.getName()).append("\n");
                     }
                 });
-
-            }
+            });
             itemsOfThatLocalization.clear();
             categoryList.clear();
-        }
+        });
+
         return content.toString();
     }
 
