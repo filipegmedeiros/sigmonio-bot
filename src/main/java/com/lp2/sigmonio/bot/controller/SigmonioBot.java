@@ -26,6 +26,8 @@ public class SigmonioBot extends AbilityBot {
             "*To see how I work, use /commands  ^^*";
 
     private static String commandsList = "`————————————————————————`\n" +
+            "*Summary:* word `type` means it can be *localization* or *category*" +
+            "`————————————————————————`\n" +
             "/register *is used to register one localization, category or item.*\n" +
             "/register *type* `name`*,* `description`\n" +
             "/register *item* `name`*,* `description`*,* `localizationName`*,* `categoryName`\n" +
@@ -51,7 +53,7 @@ public class SigmonioBot extends AbilityBot {
             "`————————————————————————`\n" +
             "/search *is used to list a UNIQUE localization, category or item*\n" +
             "/search *type* `uniqueName`\n" +
-            "/search *type* `uniqueId`\n" +
+            "/search *item* `uniqueId`\n" +
             "`——————`\n" +
             "\n" +
             "*Example of inputs acceptable:*\n" +
