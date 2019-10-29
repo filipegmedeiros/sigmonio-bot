@@ -12,6 +12,4 @@ public interface LocalizationRepository extends JpaRepository<Localization, Stri
     Optional<Localization> findByName(String name);
     boolean existsByName(String name);
     List<Localization> findAllByNameContains(String name);
-
-
 }

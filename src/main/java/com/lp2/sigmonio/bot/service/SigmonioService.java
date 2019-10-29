@@ -7,6 +7,11 @@ public interface SigmonioService {
     boolean verifyArguments(ArrayList<String> arguments , int size);
     ArrayList<String> sanitizeArguments(String[] arguments);
 
+    String showLocalization(String name);
+    String showCategory(String name);
+    String showItem(String id);
+    String showReview();
+
     String showLocalizations();
     String showCategories();
     String showItems();
@@ -14,14 +19,8 @@ public interface SigmonioService {
     String showItemsByCategoryName(String name);
     String showItemsBySomeDescription(String someDescription);
 
-    String showReport();
-
     String listOfLocalizationsByNameContains(String name);
     String listOfCategoriesByNameContains(String name);
-
-    String showLocalization(String name);
-    String showCategory(String name);
-    String showItem(String id);
 
     boolean verifyLocalization(String name);
     boolean verifyCategory(String name);

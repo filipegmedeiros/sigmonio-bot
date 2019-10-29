@@ -38,6 +38,7 @@ public class LocalizationServiceImpl implements LocalizationService{
         return response;
     }
 
+    @Override
     public ResponseEntity<Localization> updateByName(Localization localizationDetails, String localizationName) {
         Localization localization = findByName(localizationName);
         localization.setName(localizationDetails.getName());
@@ -57,16 +58,14 @@ public class LocalizationServiceImpl implements LocalizationService{
     }
 
     @Override
-    public boolean exists(String name) {
-        return localizationRepository.existsByName(name);
-    }
-
-    @Override
     public Localization findByName(String name) {
         return localizationRepository.findByName(name).orElseThrow(()
                 -> new ResourceNotFoundException("Localization not found for this name :: "
                 + name));
     }
 
-
+    @Override
+    public boolean exists(String name) {
+        return localizationRepository.existsByName(name);
+    }
 }

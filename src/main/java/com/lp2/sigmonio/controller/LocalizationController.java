@@ -44,7 +44,6 @@ public class LocalizationController {
     @PutMapping("/localization/{id}")
     public ResponseEntity<Localization> updateLocalization(@PathVariable(value = "id") String localizationId,
                                                            @Valid @RequestBody Localization localizationDetails){
-
         return localizationService.updateByName(localizationDetails, localizationId);
     }
 

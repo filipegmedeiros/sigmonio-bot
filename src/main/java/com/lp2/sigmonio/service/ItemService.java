@@ -11,16 +11,10 @@ public interface ItemService {
     Map<String, Boolean> deleteItem(String localizationId);
     ResponseEntity<Item> updateById(Item item, String id);
 
-    Item findById(long id);
     List<Item> findAll();
+    Item findById(long id);
     List<Item> findItemsByLocalization(String name);
     List<Item> findItemsByCategory(String name);
-
     List<Item> findItemsByDescription(String someDescription);
-
-
     ResponseEntity<Item> findOneById(String id);
-    ResponseEntity<Item> findLocalizationByItem(Item item);
-
-
 }

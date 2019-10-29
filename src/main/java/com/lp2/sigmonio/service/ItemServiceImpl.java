@@ -1,9 +1,7 @@
 package com.lp2.sigmonio.service;
 
 import com.lp2.sigmonio.exception.ResourceNotFoundException;
-import com.lp2.sigmonio.model.Category;
 import com.lp2.sigmonio.model.Item;
-import com.lp2.sigmonio.model.Localization;
 import com.lp2.sigmonio.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +27,6 @@ public class ItemServiceImpl implements ItemService{
         this.categoryService = categoryService;
     }
 
-
     @Override
     public Item save(Item item) {
         return itemRepository.save(item);
@@ -45,6 +42,7 @@ public class ItemServiceImpl implements ItemService{
         return response;
     }
 
+    @Override
     public ResponseEntity<Item> updateById(Item itemDetails, String itemId) {
 
         Item item = findById(Integer.parseInt(itemId));
@@ -66,20 +64,10 @@ public class ItemServiceImpl implements ItemService{
     }
 
     @Override
-    public ResponseEntity<Item> findLocalizationByItem(Item item) {
-        return null;
-    }
-
-    @Override
     public Item findById(long itemId) {
         return itemRepository.findById(itemId).orElseThrow(()
                 -> new ResourceNotFoundException("Localization not found for this id: "
                 + itemId));
-    }
-
-    @Override
-    public List<Item> findItemsByDescription(String someDescription) {
-        return itemRepository.findAllByDescriptionContains(someDescription);
     }
 
     @Override
@@ -92,4 +80,8 @@ public class ItemServiceImpl implements ItemService{
         return itemRepository.findAllByCategory(categoryService.findByName(name));
     }
 
+    @Override
+    public List<Item> findItemsByDescription(String someDescription) {
+        return itemRepository.findAllByDescriptionContains(someDescription);
+    }
 }

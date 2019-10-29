@@ -31,11 +31,6 @@ public class SigmonioServiceImpl implements SigmonioService {
     }
 
     @Override
-    public boolean verifyArguments(ArrayList<String> arguments, int size) {
-        return arguments.size() == size;
-    }
-
-    @Override
     public ArrayList<String> sanitizeArguments(String[] arguments) {
         arguments = Arrays.copyOfRange(arguments, 1, arguments.length);
 
@@ -61,44 +56,82 @@ public class SigmonioServiceImpl implements SigmonioService {
     }
 
     @Override
-    public boolean verifyLocalization(String name) {
-        return localizationService.exists(name);
+    public String showLocalization(String name) {
+        Localization localization = localizationService.findByName(name);
+        return "`—————LOCALIZATION—————`\n" +
+                "*ID:* `" + localization.getId() + "`\n" +
+                "*NAME:* `" + localization.getName() + "`\n" +
+                "*DESCRIPTION:* `"+ localization.getDescription() + "`\n" +
+                "`——————————————————————`";
     }
 
     @Override
-    public boolean verifyCategory(String name) {
-        return categoryService.exists(name);
+    public String showCategory(String name) {
+        Category category = categoryService.findByName(name);
+        return "`———————CATEGORY———————`\n" +
+                "*ID:* `" + category.getId() + "`\n" +
+                "*NAME:*` " + category.getName() + "`\n" +
+                "*DESCRIPTION:* `"+ category.getDescription() + "`\n" +
+                "`—————————————————————`";
     }
 
     @Override
-    public String saveLocalization(String name, String description) {
-        Localization localization = new Localization();
-        localization.setName(name);
-        localization.setDescription(description);
-        localizationService.save(localization);
-        return localization.getName();
+    public String showItem(String id) {
+        Item item = itemService.findById(Integer.parseInt(id));
+        return "`—————————ITEM———————`\n" +
+                "*ID:* `" + item.getId() + "`\n" +
+                "*NAME:* `" + item.getName() + "`\n" +
+                "*DESCRIPTION:* `"+ item.getDescription() + "`\n" +
+                "*CATEGORY:* `" + item.getCategory().getName() + "`\n" +
+                "*LOCALIZATION: *`" + item.getLocalization().getName() + "`\n" +
+                "`————————————————————`";
     }
 
     @Override
-    public String saveCategory(String name, String description) {
-        Category category = new Category();
-        category.setName(name);
-        category.setDescription(description);
-        categoryService.save(category);
-        return category.getName();
-    }
+    public String showReview() {
+        StringBuilder content = new StringBuilder();
+        List<Item> allItems = itemService.findAll();
+        List<Category> categoryList = new ArrayList<Category>();
+        List<Localization> localizationList = new ArrayList<Localization>();
 
-    @Override
-    public String saveItem(String name, String description,
-                           String LocalizationName, String categoryName){
-        Item item = new Item();
-        item.setName(name);
-        item.setDescription(description);
-        item.setLocalization(localizationService.findByName(LocalizationName));
-        item.setCategory(categoryService.findByName(categoryName));
-        itemService.save(item);
-        return String.valueOf(item.getId());
-    };
+        allItems.forEach(item -> {
+            if (!localizationList.contains(item.getLocalization()))
+                localizationList.add(item.getLocalization());
+        });
+
+        for(Localization localization : localizationList){
+
+            content.append("\n`—————LOCALIZATION—————`\n")
+                    .append(localization.getName())
+                    .append("\n`——————————————————————`\n");
+
+            List<Item> itemsOfThatLocalization = itemService.findItemsByLocalization(localization.getName());
+
+            itemsOfThatLocalization.forEach(item -> {
+                if (!categoryList.contains(item.getCategory()))
+                    categoryList.add(item.getCategory());
+            });
+
+            for (Category category : categoryList) {
+                content.append("`CATEGORY`\n")
+                        .append(category.getName())
+                        .append("\n`—————————`\n");
+
+                itemsOfThatLocalization.forEach(item -> {
+                    if(item.getCategory().getName().equals(category.getName())) {
+                        content.append("*ID:* ")
+                                .append(item.getId())
+                                .append(", *Name:* ")
+                                .append(item.getName()).append("\n");
+                    }
+                });
+
+            }
+            itemsOfThatLocalization.clear();
+            categoryList.clear();
+        }
+        return content.toString();
+    }
 
     @Override
     public String showLocalizations(){
@@ -160,7 +193,6 @@ public class SigmonioServiceImpl implements SigmonioService {
         return content.toString();
     }
 
-
     @Override
     public String listOfLocalizationsByNameContains(String name){
         List<Localization> allLocalizations = localizationService.findByNameContains(name);
@@ -181,85 +213,49 @@ public class SigmonioServiceImpl implements SigmonioService {
         return content.toString();
     }
 
-    public String showReport() {
-        StringBuilder content = new StringBuilder();
-        List<Item> allItems = itemService.findAll();
-        List<Category> categoryList = new ArrayList<Category>();
-        List<Localization> localizationList = new ArrayList<Localization>();
-
-        allItems.forEach(item -> {
-            if (!localizationList.contains(item.getLocalization()))
-                localizationList.add(item.getLocalization());
-        });
-
-        for(Localization localization : localizationList){
-
-            content.append("\n`—————LOCALIZATION—————`\n")
-                    .append(localization.getName())
-                    .append("\n`——————————————————————`\n");
-
-            List<Item> itemsOfThatLocalization = itemService.findItemsByLocalization(localization.getName());
-
-            itemsOfThatLocalization.forEach(item -> {
-                if (!categoryList.contains(item.getCategory()))
-                    categoryList.add(item.getCategory());
-            });
-
-            for (Category category : categoryList) {
-                content.append("`CATEGORY`\n")
-                        .append(category.getName())
-                        .append("\n`—————————`\n");
-
-                itemsOfThatLocalization.forEach(item -> {
-                    if(item.getCategory().getName().equals(category.getName())) {
-                        content.append("*ID:* ")
-                                .append(item.getId())
-                                .append(", *Name:* ")
-                                .append(item.getName()).append("\n");
-                    }
-                });
-
-            }
-            itemsOfThatLocalization.clear();
-            categoryList.clear();
-        }
-        return content.toString();
-
+    @Override
+    public boolean verifyArguments(ArrayList<String> arguments, int size) {
+        return arguments.size() == size;
     }
 
     @Override
-    public String showLocalization(String name) {
-        Localization localization = localizationService.findByName(name);
-        return "`—————LOCALIZATION—————`\n" +
-                "*ID:* `" + localization.getId() + "`\n" +
-                "*NAME:* `" + localization.getName() + "`\n" +
-                "*DESCRIPTION:* `"+ localization.getDescription() + "`\n" +
-                "`——————————————————————`";
+    public boolean verifyLocalization(String name) {
+        return localizationService.exists(name);
     }
 
     @Override
-    public String showCategory(String name) {
-        Category category = categoryService.findByName(name);
-        return "`———————CATEGORY———————`\n" +
-                "*ID:* `" + category.getId() + "`\n" +
-                "*NAME:*` " + category.getName() + "`\n" +
-                "*DESCRIPTION:* `"+ category.getDescription() + "`\n" +
-                "`—————————————————————`";
+    public boolean verifyCategory(String name) {
+        return categoryService.exists(name);
     }
-
 
     @Override
-    public String showItem(String id) {
-        Item item = itemService.findById(Integer.parseInt(id));
-        return "`—————————ITEM———————`\n" +
-                "*ID:* `" + item.getId() + "`\n" +
-                "*NAME:* `" + item.getName() + "`\n" +
-                "*DESCRIPTION:* `"+ item.getDescription() + "`\n" +
-                "*CATEGORY:* `" + item.getCategory().getName() + "`\n" +
-                "*LOCALIZATION: *`" + item.getLocalization().getName() + "`\n" +
-                "`————————————————————`";
+    public String saveLocalization(String name, String description) {
+        Localization localization = new Localization();
+        localization.setName(name);
+        localization.setDescription(description);
+        localizationService.save(localization);
+        return localization.getName();
     }
 
+    @Override
+    public String saveCategory(String name, String description) {
+        Category category = new Category();
+        category.setName(name);
+        category.setDescription(description);
+        categoryService.save(category);
+        return category.getName();
+    }
 
+    @Override
+    public String saveItem(String name, String description,
+                           String LocalizationName, String categoryName){
+        Item item = new Item();
+        item.setName(name);
+        item.setDescription(description);
+        item.setLocalization(localizationService.findByName(LocalizationName));
+        item.setCategory(categoryService.findByName(categoryName));
+        itemService.save(item);
+        return String.valueOf(item.getId());
+    }
 }
 

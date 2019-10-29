@@ -51,17 +51,16 @@ public class SigmonioBot extends AbilityBot {
             "/list *items by category,* `Computers`\n" +
             "/list *items by description,* `XPS 2015`\n" +
             "`————————————————————————`\n" +
-            "/search *is used to list a UNIQUE localization, category or item*\n" +
+            "/search *is used to show a UNIQUE localization, category or item*\n" +
             "/search *type* `uniqueName`\n" +
             "/search *item* `uniqueId`\n" +
             "`——————`\n" +
-            "\n" +
             "*Example of inputs acceptable:*\n" +
             "/search *localization* `Room A309`\n" +
             "/search *category* `Computers`\n" +
             "/search *item* `359`\n" +
             "`————————————————————————`\n" +
-            "/report *will generate an report of database*\n" +
+            "/Review *will generate an report of database*\n" +
             "`————————————————————————`\n" +
             "\n" +
             "*OBS: arguments its separate by comma (,) attention to that!*";
@@ -86,7 +85,7 @@ public class SigmonioBot extends AbilityBot {
                 .privacy(PUBLIC)  // Who can use this command
                 .locality(ALL) // Where this command can be use
                 .input(0) // Number of required arguments
-                .action(messageContext -> silent.sendMd("*hello friend " + messageContext.user().getFirstName() + " !* \n" + hello, messageContext.chatId())) // Action of the command
+                .action(messageContext -> silent.sendMd("*Hello friend " + messageContext.user().getFirstName() + " !* \n" + hello, messageContext.chatId())) // Action of the command
                 .build();
     }
 
@@ -173,7 +172,6 @@ public class SigmonioBot extends AbilityBot {
                                 silent.sendMd("*NOTE:* `This` *ID* `is` *unique* , `if you forgotten use` /list", messageContext.chatId());
                             }
                             break;
-
                         default:
                             silent.send("Invalid option, use localization, category or item", messageContext.chatId());
                             break;
@@ -194,14 +192,11 @@ public class SigmonioBot extends AbilityBot {
                     String categoryName;
                     String partialDescription;
                     switch (messageContext.firstArg()) {
-
                         case "localizations":
                             silent.sendMd(sigmonioService.showLocalizations(), messageContext.chatId());
                             break;
-
                         case "categories":
                             silent.sendMd(sigmonioService.showCategories(), messageContext.chatId());
-
                             break;
                         case "items":
                             if (messageContext.arguments().length > 1) {
@@ -221,7 +216,6 @@ public class SigmonioBot extends AbilityBot {
                             } else
                                 silent.sendMd(sigmonioService.showItems(), messageContext.chatId());
                             break;
-
                         default:
                             silent.send("Invalid option, use localizations, categories or items", messageContext.chatId());
                             break;
@@ -244,16 +238,12 @@ public class SigmonioBot extends AbilityBot {
                         case "localization":
                             silent.sendMd(sigmonioService.showLocalization(name), messageContext.chatId());
                             break;
-
                         case "category":
                             silent.sendMd(sigmonioService.showCategory(name), messageContext.chatId());
-
                             break;
                         case "item":
                             silent.sendMd(sigmonioService.showItem(name), messageContext.chatId());
                             break;
-
-
                         default:
                             silent.send("Invalid option, use localization, category or item", messageContext.chatId());
                             break;
@@ -262,16 +252,14 @@ public class SigmonioBot extends AbilityBot {
                 .build();
     }
 
-    public Ability relatorio() {
+    public Ability review() {
         return Ability.builder()
-                .name("relatorio") // Command
-                .info("relatorio") // info of command
+                .name("review") // Command
+                .info("review") // info of command
                 .privacy(PUBLIC)  // Who can use this command
                 .locality(ALL) // Where this command can be use
                 .input(0) // Number of required arguments
-                .action(messageContext -> silent.sendMd( sigmonioService.showReport(), messageContext.chatId()))
+                .action(messageContext -> silent.sendMd( sigmonioService.showReview(), messageContext.chatId()))
                 .build();
     }
-
-
 }

@@ -31,7 +31,6 @@ public class ItemController {
         return itemService.findOneById(itemId);
     }
 
-
     @PostMapping("/item")
     public Item createItem(@Valid @RequestBody Item item) {
         return itemService.save(item);
@@ -40,7 +39,6 @@ public class ItemController {
     @PutMapping("/item/{id}")
     public ResponseEntity<Item> updateItem(@PathVariable(value = "id") String itemId,
                                            @Valid @RequestBody Item itemDetails){
-
         return itemService.updateById(itemDetails, itemId);
     }
 

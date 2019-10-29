@@ -36,6 +36,7 @@ public class CategoryServiceImpl implements CategoryService{
         return response;
     }
 
+    @Override
     public ResponseEntity<Category> updateById(Category categoryDetails, long categoryId) {
         Category category = findById(categoryId);
         category.setName(categoryDetails.getName());
@@ -69,15 +70,14 @@ public class CategoryServiceImpl implements CategoryService{
     }
 
     @Override
-    public boolean exists(String name) {
-        return categoryRepository.existsByName(name);
-    }
-
-    @Override
     public Category findByName(String name) {
         return categoryRepository.findByName(name).orElseThrow(()
                 -> new ResourceNotFoundException("Category not found for this name :: "
                 + name));
     }
 
+    @Override
+    public boolean exists(String name) {
+        return categoryRepository.existsByName(name);
+    }
 }

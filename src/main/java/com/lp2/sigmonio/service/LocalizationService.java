@@ -9,10 +9,11 @@ public interface LocalizationService {
     Localization save(Localization localization);
     Map<String, Boolean> deleteLocalization(String localizationId);
     ResponseEntity<Localization> updateByName(Localization localization, String name);
+
     List<Localization> findAll();
     List<Localization> findByNameContains(String name);
+    Localization findByName(String name);
 
     boolean exists(String name);
 
-    Localization findByName(String name);
 }
