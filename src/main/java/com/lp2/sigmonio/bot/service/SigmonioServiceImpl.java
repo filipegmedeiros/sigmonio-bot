@@ -6,7 +6,6 @@ import com.lp2.sigmonio.model.Localization;
 import com.lp2.sigmonio.service.CategoryService;
 import com.lp2.sigmonio.service.ItemService;
 import com.lp2.sigmonio.service.LocalizationService;
-import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

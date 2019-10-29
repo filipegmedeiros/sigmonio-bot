@@ -1,11 +1,6 @@
 package com.lp2.sigmonio.bot.service;
 
-import com.lp2.sigmonio.model.Category;
-import com.lp2.sigmonio.model.Item;
-import com.lp2.sigmonio.model.Localization;
-
 import java.util.ArrayList;
-import java.util.List;
 
 public interface SigmonioService {
 
