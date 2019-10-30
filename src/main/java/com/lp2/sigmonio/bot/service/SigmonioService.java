@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public interface SigmonioService {
 
     boolean verifyArguments(ArrayList<String> arguments , int size);
-    ArrayList<String> sanitizeArguments(String[] arguments);
+    ArrayList<String> sanitizeArguments(String[] arguments, boolean cutFirst);
 
     String showLocalization(String name);
     String showCategory(String name);
@@ -29,4 +29,5 @@ public interface SigmonioService {
     String saveCategory(String name, String description);
     String saveItem(String name, String description, String LocalizationName, String categoryName);
 
+    void moveItem(String itemId, String newLocalizationName);
 }

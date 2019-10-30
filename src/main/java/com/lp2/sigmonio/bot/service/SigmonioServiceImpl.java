@@ -1,5 +1,6 @@
 package com.lp2.sigmonio.bot.service;
 
+import com.lp2.sigmonio.exception.ResourceNotFoundException;
 import com.lp2.sigmonio.model.Category;
 import com.lp2.sigmonio.model.Item;
 import com.lp2.sigmonio.model.Localization;
@@ -31,8 +32,10 @@ public class SigmonioServiceImpl implements SigmonioService {
     }
 
     @Override
-    public ArrayList<String> sanitizeArguments(String[] arguments) {
-        arguments = Arrays.copyOfRange(arguments, 1, arguments.length);
+    public ArrayList<String> sanitizeArguments(String[] arguments, boolean cutFirst) {
+        if (cutFirst) {
+            arguments = Arrays.copyOfRange(arguments, 1, arguments.length);
+        }
 
         ArrayList<String> sanitizedArguments = new ArrayList<String>();
 
@@ -255,6 +258,17 @@ public class SigmonioServiceImpl implements SigmonioService {
         item.setCategory(categoryService.findByName(categoryName));
         itemService.save(item);
         return String.valueOf(item.getId());
+    }
+
+    @Override
+    public void moveItem(String itemId, String newLocalizationName) throws ResourceNotFoundException{
+        try {
+            itemService.updateItemLocalization(itemId, newLocalizationName);
+        }
+        catch (ResourceNotFoundException resourceNotFoundException) {
+            throw resourceNotFoundException;
+        }
+
     }
 }
 
