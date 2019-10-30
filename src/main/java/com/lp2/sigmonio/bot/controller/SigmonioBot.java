@@ -1,6 +1,7 @@
 package com.lp2.sigmonio.bot.controller;
 
 import com.lp2.sigmonio.bot.service.SigmonioService;
+import com.lp2.sigmonio.exception.ResourceNotFoundException;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.log4j.Log4j2;
@@ -60,7 +61,7 @@ public class SigmonioBot extends AbilityBot {
             "/search *category* `Computers`\n" +
             "/search *item* `359`\n" +
             "`————————————————————————`\n" +
-            "/Review *will generate an report of database*\n" +
+            "/Review *will generate an review of database*\n" +
             "`————————————————————————`\n" +
             "\n" +
             "*OBS: arguments its separate by comma (,) attention to that!*";
@@ -92,7 +93,7 @@ public class SigmonioBot extends AbilityBot {
     public Ability commands() {
         return Ability.builder()
                 .name("commands") // Command
-                .info("commands") // info of command
+                .info("Commands") // info of command
                 .privacy(PUBLIC)  // Who can use this command
                 .locality(ALL) // Where this command can be use
                 .input(0) // Number of required arguments
@@ -109,7 +110,7 @@ public class SigmonioBot extends AbilityBot {
                 .locality(ALL)
                 .input(0)
                 .action(messageContext -> {
-                    ArrayList<String> argument = sigmonioService.sanitizeArguments(messageContext.arguments());
+                    ArrayList<String> argument = sigmonioService.sanitizeArguments(messageContext.arguments(), true);
                     String name;
                     String description;
                     String localizationName;
@@ -183,7 +184,7 @@ public class SigmonioBot extends AbilityBot {
     public Ability list() {
         return Ability.builder()
                 .name("list") // Command
-                .info("list all locations, categories, items or items of localization") // info of command
+                .info("List all locations, categories, items or items of localization") // info of command
                 .privacy(PUBLIC)  // Who can use this command
                 .locality(ALL) // Where this command can be use
                 .input(0) // Number of required arguments
@@ -200,7 +201,7 @@ public class SigmonioBot extends AbilityBot {
                             break;
                         case "items":
                             if (messageContext.arguments().length > 1) {
-                                ArrayList<String> argument = sigmonioService.sanitizeArguments(messageContext.arguments());
+                                ArrayList<String> argument = sigmonioService.sanitizeArguments(messageContext.arguments(), true);
                                 if (argument.get(0).equals("by description")) {
                                     partialDescription = argument.get(1);
                                     silent.sendMd(sigmonioService.showItemsBySomeDescription(partialDescription), messageContext.chatId());
@@ -227,12 +228,12 @@ public class SigmonioBot extends AbilityBot {
     public Ability search() {
         return Ability.builder()
                 .name("search") // Command
-                .info("search one localization, category, item") // info of command
+                .info("Search one localization, category, item") // info of command
                 .privacy(PUBLIC)  // Who can use this command
                 .locality(ALL) // Where this command can be use
                 .input(0) // Number of required arguments
                 .action(messageContext -> {
-                    ArrayList<String> argument = sigmonioService.sanitizeArguments(messageContext.arguments());
+                    ArrayList<String> argument = sigmonioService.sanitizeArguments(messageContext.arguments(), true);
                     String name = argument.get(0);
                     switch (messageContext.firstArg()) {
                         case "localization":
@@ -255,11 +256,22 @@ public class SigmonioBot extends AbilityBot {
     public Ability review() {
         return Ability.builder()
                 .name("review") // Command
-                .info("review") // info of command
+                .info("Review of database") // info of command
                 .privacy(PUBLIC)  // Who can use this command
                 .locality(ALL) // Where this command can be use
                 .input(0) // Number of required arguments
-                .action(messageContext -> silent.sendMd( sigmonioService.showReview(), messageContext.chatId()))
+                .action(messageContext -> silent.sendMd(sigmonioService.showReview(), messageContext.chatId()))
+                .build();
+    }
+
+    public Ability commandNotExist() {
+        return Ability.builder()
+                .name(DEFAULT) // Command
+                .info("Command default") // info of command
+                .privacy(PUBLIC)  // Who can use this command
+                .locality(ALL) // Where this command can be use
+                .input(0) // Number of required arguments
+                .action(messageContext -> silent.send("\"" + String.join(" ", messageContext.arguments()) + "\" is not a command, you can use /commands to see all commands", messageContext.chatId()))
                 .build();
     }
 }
