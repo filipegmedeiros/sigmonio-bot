@@ -60,7 +60,7 @@ public class LocalizationServiceImpl implements LocalizationService{
     @Override
     public Localization findByName(String name) {
         return localizationRepository.findByName(name).orElseThrow(()
-                -> new ResourceNotFoundException("Localization not found for this name :: "
+                -> new ResourceNotFoundException("Localization not found for this name : "
                 + name));
     }
 
