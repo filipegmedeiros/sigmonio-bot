@@ -29,13 +29,11 @@ public class LocalizationServiceImpl implements LocalizationService{
     }
 
     @Override
-    public Map<String, Boolean> deleteLocalization(String localizationName)
+    public String deleteLocalization(String localizationName)
             throws ResourceNotFoundException {
         Localization localization = findByName(localizationName);
         localizationRepository.delete(localization);
-        Map<String, Boolean> response = new HashMap<>();
-        response.put("deleted", Boolean.TRUE);
-        return response;
+        return "Deleted Successfully";
     }
 
     @Override

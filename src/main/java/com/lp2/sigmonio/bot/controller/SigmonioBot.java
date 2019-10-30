@@ -61,6 +61,21 @@ public class SigmonioBot extends AbilityBot {
             "/search *category* `Computers`\n" +
             "/search *item* `359`\n" +
             "`————————————————————————`\n" +
+            "/delete *is used to delete a UNIQUE localization, category or item*\n" +
+            "/delete *type* `uniqueName`\n" +
+            "/delete *item* `uniqueId`\n" +
+            "`——————`\n" +
+            "*Example of inputs acceptable:*\n" +
+            "/delete *localization* `Room A309`\n" +
+            "/delete *category* `Computers`\n" +
+            "/delete *item* `359`\n" +
+            "`————————————————————————`\n" +
+            "/move *is used to move a localization of ONE item*\n" +
+            "/move *itemId,* `localizationName`\n" +
+            "`——————`\n" +
+            "*Example of inputs acceptable:*\n" +
+            "/move *1,* `Room A309`\n" +
+            "`————————————————————————`\n" +
             "/Review *will generate an review of database*\n" +
             "`————————————————————————`\n" +
             "\n" +
@@ -289,6 +304,36 @@ public class SigmonioBot extends AbilityBot {
                 .action(messageContext -> silent.sendMd(sigmonioService.showReview(), messageContext.chatId()))
                 .build();
     }
+
+
+    public Ability delete() {
+        return Ability.builder()
+                .name("delete") // Command
+                .info("delete one localization, category, item") // info of command
+                .privacy(PUBLIC)  // Who can use this command
+                .locality(ALL) // Where this command can be use
+                .input(0) // Number of required arguments
+                .action(messageContext -> {
+                    ArrayList<String> argument = sigmonioService.sanitizeArguments(messageContext.arguments(), true);
+                    String name = argument.get(0);
+                    switch (messageContext.firstArg()) {
+                        case "localization":
+                            silent.sendMd(sigmonioService.deleteLocalization(name), messageContext.chatId());
+                            break;
+                        case "category":
+                            silent.sendMd(sigmonioService.deleteCategory(name), messageContext.chatId());
+                            break;
+                        case "item":
+                            silent.sendMd(sigmonioService.deleteItem(name), messageContext.chatId());
+                            break;
+                        default:
+                            silent.send("Invalid option, use localization, category or item", messageContext.chatId());
+                            break;
+                    }
+                })
+                .build();
+    }
+
 
     public Ability commandNotExist() {
         return Ability.builder()

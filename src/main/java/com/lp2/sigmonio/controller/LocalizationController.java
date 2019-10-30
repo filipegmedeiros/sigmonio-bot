@@ -47,8 +47,8 @@ public class LocalizationController {
         return localizationService.updateByName(localizationDetails, localizationId);
     }
 
-    @DeleteMapping("/localization/{id}")
-    public Map<String, Boolean> deleteLocalization(@PathVariable(value = "id") String localizationId){
-        return localizationService.deleteLocalization(localizationId);
+    @DeleteMapping("/localization/{name}")
+    public String deleteLocalization(@PathVariable(value = "name") String localizationName){
+        return localizationService.deleteLocalization(localizationName);
     }
 }

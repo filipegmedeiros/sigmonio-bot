@@ -42,8 +42,8 @@ public class CategoryController {
         return categoryService.updateById(categoryDetails, categoryId);
     }
 
-    @DeleteMapping("/category/{id}")
-    public Map<String, Boolean> deleteCategory(@PathVariable(value = "id") Long categoryId){
-        return categoryService.deleteCategory(categoryId);
+    @DeleteMapping("/category/{name}")
+    public String deleteCategory(@PathVariable(value = "name") String categoryName){
+        return categoryService.deleteCategory(categoryName);
     }
 }

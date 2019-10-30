@@ -30,4 +30,9 @@ public interface SigmonioService {
     String saveItem(String name, String description, String LocalizationName, String categoryName);
 
     void moveItem(String itemId, String newLocalizationName);
+
+    String deleteLocalization(String name);
+    String deleteCategory(String name);
+    String deleteItem(String name);
+
 }

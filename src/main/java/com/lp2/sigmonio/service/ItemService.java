@@ -8,7 +8,7 @@ import java.util.Map;
 
 public interface ItemService {
     Item save(Item item);
-    Map<String, Boolean> deleteItem(String localizationId);
+    String deleteItem(String id);
     ResponseEntity<Item> updateById(Item item, String id);
     ResponseEntity<Item> updateItemLocalization(String itemId, String newLocalizationName);
 

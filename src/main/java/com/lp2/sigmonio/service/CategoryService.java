@@ -8,7 +8,7 @@ import java.util.Map;
 
 public interface CategoryService {
     Category save(Category category);
-    Map<String, Boolean> deleteCategory(Long categoryId);
+    String deleteCategory(String categoryName);
     ResponseEntity<Category> updateById(Category category, long id);
 
     List<Category> findAll();

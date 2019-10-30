@@ -27,13 +27,11 @@ public class CategoryServiceImpl implements CategoryService{
     }
 
     @Override
-    public Map<String, Boolean> deleteCategory(Long categoryId)
+    public String deleteCategory(String categoryName)
             throws ResourceNotFoundException {
-        Category category = findById(categoryId);
+        Category category = findByName(categoryName);
         categoryRepository.delete(category);
-        Map<String, Boolean> response = new HashMap<>();
-        response.put("deleted", Boolean.TRUE);
-        return response;
+        return "Deleted Successfully!";
     }
 
     @Override

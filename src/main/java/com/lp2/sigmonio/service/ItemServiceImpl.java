@@ -34,13 +34,11 @@ public class ItemServiceImpl implements ItemService{
     }
 
     @Override
-    public Map<String, Boolean> deleteItem(String itemId)
+    public String deleteItem(String itemId)
             throws ResourceNotFoundException {
         Item item = findById(Integer.parseInt(itemId));
         itemRepository.delete(item);
-        Map<String, Boolean> response = new HashMap<>();
-        response.put("deleted", Boolean.TRUE);
-        return response;
+        return "Deleted Successfully!";
     }
 
     @Override

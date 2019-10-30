@@ -270,5 +270,34 @@ public class SigmonioServiceImpl implements SigmonioService {
         }
 
     }
+
+    @Override
+    public String deleteLocalization(String name) {
+        List<Item> itemList = itemService.findItemsByLocalization(name);
+
+        if(!itemList.isEmpty()) {
+            return "*Can't Delete That Localization!!!!* \n\n" +
+                    "*Needed delete or move that items first:* \n" +
+                    showItemsByLocalizationName(name);
+        }else
+        return localizationService.deleteLocalization(name);
+    }
+
+    @Override
+    public String deleteCategory(String name) {
+        List<Item> itemList = itemService.findItemsByCategory(name);
+
+        if(!itemList.isEmpty()) {
+            return "*Can't Delete That Category!!!!* \n\n" +
+                    "*Needed delete or move that items first:* \n" +
+                    showItemsByCategoryName(name);
+        }else
+            return categoryService.deleteCategory(name);
+    }
+
+    @Override
+    public String deleteItem(String name) {
+        return itemService.deleteItem(name);
+    }
 }
 
