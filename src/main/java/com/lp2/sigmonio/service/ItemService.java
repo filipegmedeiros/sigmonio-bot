@@ -10,6 +10,7 @@ public interface ItemService {
     Item save(Item item);
     Map<String, Boolean> deleteItem(String localizationId);
     ResponseEntity<Item> updateById(Item item, String id);
+    ResponseEntity<Item> updateItemLocalization(String itemId, String newLocalizationName);
 
     List<Item> findAll();
     Item findById(long id);

@@ -2,6 +2,7 @@ package com.lp2.sigmonio.service;
 
 import com.lp2.sigmonio.exception.ResourceNotFoundException;
 import com.lp2.sigmonio.model.Item;
+import com.lp2.sigmonio.model.Localization;
 import com.lp2.sigmonio.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -44,12 +45,25 @@ public class ItemServiceImpl implements ItemService{
 
     @Override
     public ResponseEntity<Item> updateById(Item itemDetails, String itemId) {
-
         Item item = findById(Integer.parseInt(itemId));
         item.setName(itemDetails.getName());
         item.setDescription(itemDetails.getDescription());
         final Item updatedItem = itemRepository.save(item);
         return ResponseEntity.ok(updatedItem);
+    }
+
+    @Override
+    public ResponseEntity<Item> updateItemLocalization(String itemId, String newLocalizationName) throws ResourceNotFoundException{
+        try {
+            Item item = findById(Integer.parseInt(itemId));
+            Localization localization = localizationService.findByName(newLocalizationName);
+            item.setLocalization(localization);
+            final Item updatedItem = itemRepository.save(item);
+            return ResponseEntity.ok(updatedItem);
+        }
+        catch (ResourceNotFoundException resourceNotFoundException){
+            throw resourceNotFoundException;
+        }
     }
 
     @Override
