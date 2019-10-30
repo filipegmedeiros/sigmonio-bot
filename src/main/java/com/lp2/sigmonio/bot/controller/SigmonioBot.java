@@ -253,6 +253,32 @@ public class SigmonioBot extends AbilityBot {
                 .build();
     }
 
+    public Ability move() {
+        return Ability.builder()
+                .name("move") // Command
+                .info("Move a item of a localization to other") // info of command
+                .privacy(PUBLIC)  // Who can use this command
+                .locality(ALL) // Where this command can be use
+                .input(0) // Number of required arguments
+                .action(messageContext -> {
+                    ArrayList<String> argument = sigmonioService.sanitizeArguments(messageContext.arguments(), false);
+                    if (!sigmonioService.verifyArguments(argument, 2)) {
+                        silent.sendMd("Verify your arguments, look this example:\n " +
+                                "/move `1`*,* `Room A309`", messageContext.chatId());
+                    }
+                    else {
+                        try {
+                            sigmonioService.moveItem(argument.get(0), argument.get(1));
+                            silent.send("Successful move", messageContext.chatId());
+                        }
+                        catch (ResourceNotFoundException resourceNotFoundException) {
+                            silent.send(resourceNotFoundException.getMessage(), messageContext.chatId());
+                        }
+                    }
+                })
+                .build();
+    }
+
     public Ability review() {
         return Ability.builder()
                 .name("review") // Command
