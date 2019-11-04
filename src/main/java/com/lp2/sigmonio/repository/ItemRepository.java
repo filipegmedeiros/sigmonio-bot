@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 public interface ItemRepository extends JpaRepository<Item, Long> {
-    List<Item> findAllByLocalization(Localization Localization);
+    List<Item> findAllByLocalizationOrderByNameAsc(Localization Localization);
     List<Item> findAllByCategory(Category Category);
     List<Item> findAllByDescriptionContains(String someDescription);
 }

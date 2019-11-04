@@ -8,9 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class ItemServiceImpl implements ItemService{
@@ -84,7 +82,7 @@ public class ItemServiceImpl implements ItemService{
 
     @Override
     public List<Item> findItemsByLocalization(String name) {
-        return itemRepository.findAllByLocalization(localizationService.findByName(name));
+        return itemRepository.findAllByLocalizationOrderByNameAsc(localizationService.findByName(name));
     }
 
     @Override
