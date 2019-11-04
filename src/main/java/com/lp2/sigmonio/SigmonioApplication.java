@@ -12,15 +12,26 @@ import java.util.TimeZone;
 
 @SpringBootApplication
 @EnableJpaRepositories
-public class SigmonioApplication {
+public class SigmonioApplication implements Command {
+
+	@Override
+	public void execute() {
+		ApiContextInitializer.init();
+	}
+
+	SigmonioApplication(){
+		this.execute();
+	}
+
+
 	@PostConstruct
 	void started(){
 		TimeZone.setDefault(TimeZone.getTimeZone("TimeZone"));
 	}
 
 	public static void main(String[] args) {
-		ApiContextInitializer.init();
 		SpringApplication.run(SigmonioApplication.class, args);
 	}
+
 
 }
