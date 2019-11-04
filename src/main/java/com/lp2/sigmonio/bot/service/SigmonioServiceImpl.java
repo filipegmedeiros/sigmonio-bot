@@ -10,7 +10,6 @@ import com.lp2.sigmonio.service.LocalizationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -64,7 +63,7 @@ public class SigmonioServiceImpl implements SigmonioService {
         return "`—————LOCALIZATION—————`\n" +
                 "*ID:* `" + localization.getId() + "`\n" +
                 "*NAME:* `" + localization.getName() + "`\n" +
-                "*DESCRIPTION:* `"+ localization.getDescription() + "`\n" +
+                "*DESCRIPTION:* `" + localization.getDescription() + "`\n" +
                 "`——————————————————————`";
     }
 
@@ -74,7 +73,7 @@ public class SigmonioServiceImpl implements SigmonioService {
         return "`———————CATEGORY———————`\n" +
                 "*ID:* `" + category.getId() + "`\n" +
                 "*NAME:*` " + category.getName() + "`\n" +
-                "*DESCRIPTION:* `"+ category.getDescription() + "`\n" +
+                "*DESCRIPTION:* `" + category.getDescription() + "`\n" +
                 "`—————————————————————`";
     }
 
@@ -84,7 +83,7 @@ public class SigmonioServiceImpl implements SigmonioService {
         return "`—————————ITEM———————`\n" +
                 "*ID:* `" + item.getId() + "`\n" +
                 "*NAME:* `" + item.getName() + "`\n" +
-                "*DESCRIPTION:* `"+ item.getDescription() + "`\n" +
+                "*DESCRIPTION:* `" + item.getDescription() + "`\n" +
                 "*CATEGORY:* `" + item.getCategory().getName() + "`\n" +
                 "*LOCALIZATION: *`" + item.getLocalization().getName() + "`\n" +
                 "`————————————————————`";
@@ -120,7 +119,7 @@ public class SigmonioServiceImpl implements SigmonioService {
                         .append("\n`—————————`\n");
 
                 itemsOfThatLocalization.forEach(item -> {
-                    if(item.getCategory().getName().equals(category.getName())) {
+                    if (item.getCategory().getName().equals(category.getName())) {
                         content.append("*ID:* ")
                                 .append(item.getId())
                                 .append(", *Name:* ")
@@ -136,7 +135,7 @@ public class SigmonioServiceImpl implements SigmonioService {
     }
 
     @Override
-    public String showLocalizations(){
+    public String showLocalizations() {
         List<Localization> allItems = localizationService.findAll();
         StringBuilder content = new StringBuilder();
         allItems.forEach(localization -> {
@@ -196,7 +195,7 @@ public class SigmonioServiceImpl implements SigmonioService {
     }
 
     @Override
-    public String listOfLocalizationsByNameContains(String name){
+    public String listOfLocalizationsByNameContains(String name) {
         List<Localization> allLocalizations = localizationService.findByNameContains(name);
         StringBuilder content = new StringBuilder();
         allLocalizations.forEach(localization -> {
@@ -206,7 +205,7 @@ public class SigmonioServiceImpl implements SigmonioService {
     }
 
     @Override
-    public String listOfCategoriesByNameContains(String name){
+    public String listOfCategoriesByNameContains(String name) {
         List<Category> allCategories = categoryService.findByNameContains(name);
         StringBuilder content = new StringBuilder();
         allCategories.forEach(category -> {
@@ -250,7 +249,7 @@ public class SigmonioServiceImpl implements SigmonioService {
 
     @Override
     public String saveItem(String name, String description,
-                           String LocalizationName, String categoryName){
+                           String LocalizationName, String categoryName) {
         Item item = new Item();
         item.setName(name);
         item.setDescription(description);
@@ -261,11 +260,10 @@ public class SigmonioServiceImpl implements SigmonioService {
     }
 
     @Override
-    public void moveItem(String itemId, String newLocalizationName) throws ResourceNotFoundException{
+    public void moveItem(String itemId, String newLocalizationName) throws ResourceNotFoundException {
         try {
             itemService.updateItemLocalization(itemId, newLocalizationName);
-        }
-        catch (ResourceNotFoundException resourceNotFoundException) {
+        } catch (ResourceNotFoundException resourceNotFoundException) {
             throw resourceNotFoundException;
         }
 
@@ -275,23 +273,23 @@ public class SigmonioServiceImpl implements SigmonioService {
     public String deleteLocalization(String name) {
         List<Item> itemList = itemService.findItemsByLocalization(name);
 
-        if(!itemList.isEmpty()) {
+        if (!itemList.isEmpty()) {
             return "*Can't Delete That Localization!!!!* \n\n" +
                     "*Needed delete or move that items first:* \n" +
                     showItemsByLocalizationName(name);
-        }else
-        return localizationService.deleteLocalization(name);
+        } else
+            return localizationService.deleteLocalization(name);
     }
 
     @Override
     public String deleteCategory(String name) {
         List<Item> itemList = itemService.findItemsByCategory(name);
 
-        if(!itemList.isEmpty()) {
+        if (!itemList.isEmpty()) {
             return "*Can't Delete That Category!!!!* \n\n" +
                     "*Needed delete or move that items first:* \n" +
                     showItemsByCategoryName(name);
-        }else
+        } else
             return categoryService.deleteCategory(name);
     }
 

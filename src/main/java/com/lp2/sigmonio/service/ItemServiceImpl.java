@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ItemServiceImpl implements ItemService{
+public class ItemServiceImpl implements ItemService {
 
     private ItemRepository itemRepository;
     private LocalizationService localizationService;
@@ -49,15 +49,14 @@ public class ItemServiceImpl implements ItemService{
     }
 
     @Override
-    public ResponseEntity<Item> updateItemLocalization(String itemId, String newLocalizationName) throws ResourceNotFoundException{
+    public ResponseEntity<Item> updateItemLocalization(String itemId, String newLocalizationName) throws ResourceNotFoundException {
         try {
             Item item = findById(Integer.parseInt(itemId));
             Localization localization = localizationService.findByName(newLocalizationName);
             item.setLocalization(localization);
             final Item updatedItem = itemRepository.save(item);
             return ResponseEntity.ok(updatedItem);
-        }
-        catch (ResourceNotFoundException resourceNotFoundException){
+        } catch (ResourceNotFoundException resourceNotFoundException) {
             throw resourceNotFoundException;
         }
     }

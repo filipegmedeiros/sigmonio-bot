@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/")
@@ -27,7 +26,7 @@ public class ItemController {
     }
 
     @GetMapping("/item/{id}")
-    public ResponseEntity<Item> getItemById(@PathVariable(value = "id") String itemId){
+    public ResponseEntity<Item> getItemById(@PathVariable(value = "id") String itemId) {
         return itemService.findOneById(itemId);
     }
 
@@ -38,12 +37,12 @@ public class ItemController {
 
     @PutMapping("/item/{id}")
     public ResponseEntity<Item> updateItem(@PathVariable(value = "id") String itemId,
-                                           @Valid @RequestBody Item itemDetails){
+                                           @Valid @RequestBody Item itemDetails) {
         return itemService.updateById(itemDetails, itemId);
     }
 
     @DeleteMapping("/item/{id}")
-    public String deleteItem(@PathVariable(value = "id") String itemId){
+    public String deleteItem(@PathVariable(value = "id") String itemId) {
         return itemService.deleteItem(itemId);
     }
 }

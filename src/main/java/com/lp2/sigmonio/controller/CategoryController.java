@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/")
@@ -17,7 +16,7 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @Autowired
-    public CategoryController(CategoryService categoryService){
+    public CategoryController(CategoryService categoryService) {
         this.categoryService = categoryService;
     }
 
@@ -27,7 +26,7 @@ public class CategoryController {
     }
 
     @GetMapping("/category/{id}")
-    public ResponseEntity<Category> getCategoryById(@PathVariable(value = "id") Long categoryId){
+    public ResponseEntity<Category> getCategoryById(@PathVariable(value = "id") Long categoryId) {
         return categoryService.findOneById(categoryId);
     }
 
@@ -38,12 +37,12 @@ public class CategoryController {
 
     @PutMapping("/category/{id}")
     public ResponseEntity<Category> updateCategory(@PathVariable(value = "id") Long categoryId,
-                                                           @Valid @RequestBody Category categoryDetails){
+                                                   @Valid @RequestBody Category categoryDetails) {
         return categoryService.updateById(categoryDetails, categoryId);
     }
 
     @DeleteMapping("/category/{name}")
-    public String deleteCategory(@PathVariable(value = "name") String categoryName){
+    public String deleteCategory(@PathVariable(value = "name") String categoryName) {
         return categoryService.deleteCategory(categoryName);
     }
 }

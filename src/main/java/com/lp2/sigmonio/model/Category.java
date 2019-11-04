@@ -20,5 +20,6 @@ public class Category {
     @NonNull
     private String name;
 
-    @NonNull private String description;
+    @NonNull
+    private String description;
 }

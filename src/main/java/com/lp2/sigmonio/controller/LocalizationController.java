@@ -1,24 +1,13 @@
 package com.lp2.sigmonio.controller;
 
-import java.util.List;
-import java.util.Map;
-
-import javax.validation.Valid;
-
+import com.lp2.sigmonio.model.Localization;
 import com.lp2.sigmonio.service.LocalizationService;
-import com.lp2.sigmonio.service.LocalizationServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.lp2.sigmonio.model.Localization;
+import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/")
@@ -43,12 +32,12 @@ public class LocalizationController {
 
     @PutMapping("/localization/{id}")
     public ResponseEntity<Localization> updateLocalization(@PathVariable(value = "id") String localizationId,
-                                                           @Valid @RequestBody Localization localizationDetails){
+                                                           @Valid @RequestBody Localization localizationDetails) {
         return localizationService.updateByName(localizationDetails, localizationId);
     }
 
     @DeleteMapping("/localization/{name}")
-    public String deleteLocalization(@PathVariable(value = "name") String localizationName){
+    public String deleteLocalization(@PathVariable(value = "name") String localizationName) {
         return localizationService.deleteLocalization(localizationName);
     }
 }

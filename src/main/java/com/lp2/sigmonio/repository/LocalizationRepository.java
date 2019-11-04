@@ -10,6 +10,8 @@ import java.util.Optional;
 @Repository
 public interface LocalizationRepository extends JpaRepository<Localization, String> {
     Optional<Localization> findByName(String name);
+
     boolean existsByName(String name);
+
     List<Localization> findAllByNameContains(String name);
 }

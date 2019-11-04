@@ -280,13 +280,11 @@ public class SigmonioBot extends AbilityBot {
                     if (!sigmonioService.verifyArguments(argument, 2)) {
                         silent.sendMd("Verify your arguments, look this example:\n " +
                                 "/move `1`*,* `Room A309`", messageContext.chatId());
-                    }
-                    else {
+                    } else {
                         try {
                             sigmonioService.moveItem(argument.get(0), argument.get(1));
                             silent.send("Successful move", messageContext.chatId());
-                        }
-                        catch (ResourceNotFoundException resourceNotFoundException) {
+                        } catch (ResourceNotFoundException resourceNotFoundException) {
                             silent.send(resourceNotFoundException.getMessage(), messageContext.chatId());
                         }
                     }
