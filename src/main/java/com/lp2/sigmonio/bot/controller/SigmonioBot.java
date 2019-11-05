@@ -130,8 +130,17 @@ public class SigmonioBot extends AbilityBot {
                     String description;
                     String localizationName;
                     String categoryName;
+                    String firstArg = "";
+        
+                    try {
+                        firstArg = messageContext.firstArg();
+                    }
+                    catch (IllegalStateException illegalStateException) {
+                        silent.send("Invalid option, use localization, category or item", messageContext.chatId());
+                        return;
+                    }
 
-                    switch (messageContext.firstArg()) {
+                    switch (firstArg) {
                         case "localization":
                             if (!sigmonioService.verifyArguments(argument, 2)) {
                                 silent.sendMd("Verify your arguments, look this example:\n " +
@@ -207,7 +216,17 @@ public class SigmonioBot extends AbilityBot {
                     String localizationName;
                     String categoryName;
                     String partialDescription;
-                    switch (messageContext.firstArg()) {
+                    String firstArg = "";
+                    
+                    try {
+                        firstArg = messageContext.firstArg();
+                    }
+                    catch (IllegalStateException illegalStateException) {
+                        silent.send("Invalid option, use localization, category or item", messageContext.chatId());
+                        return;
+                    }
+
+                    switch (firstArg) {
                         case "localizations":
                             silent.sendMd(sigmonioService.showLocalizations(), messageContext.chatId());
                             break;
@@ -249,8 +268,18 @@ public class SigmonioBot extends AbilityBot {
                 .input(0) // Number of required arguments
                 .action(messageContext -> {
                     ArrayList<String> argument = sigmonioService.sanitizeArguments(messageContext.arguments(), true);
-                    String name = argument.get(0);
-                    switch (messageContext.firstArg()) {
+                    String name = "";
+                    String firstArg = "";
+                    try {
+                        firstArg = messageContext.firstArg();
+                        name = argument.get(0);
+                    }
+                    catch (RuntimeException runtimeException) {
+                        silent.send("Invalid option, use localization, category or item", messageContext.chatId());
+                        return;
+                    }
+
+                    switch (firstArg) {
                         case "localization":
                             silent.sendMd(sigmonioService.showLocalization(name), messageContext.chatId());
                             break;
@@ -299,7 +328,13 @@ public class SigmonioBot extends AbilityBot {
                 .privacy(PUBLIC)  // Who can use this command
                 .locality(ALL) // Where this command can be use
                 .input(0) // Number of required arguments
-                .action(messageContext -> silent.sendMd(sigmonioService.showReview(), messageContext.chatId()))
+                .action(messageContext -> {
+                    if (messageContext.arguments().length != 0) {
+                        silent.send("This command no need argument", messageContext.chatId());
+                        return;
+                    }
+                    silent.sendMd(sigmonioService.showReview(), messageContext.chatId());
+                })
                 .build();
     }
 
@@ -331,7 +366,6 @@ public class SigmonioBot extends AbilityBot {
                 })
                 .build();
     }
-
 
     public Ability commandNotExist() {
         return Ability.builder()
