@@ -33,7 +33,12 @@ public class SigmonioServiceImpl implements SigmonioService {
     @Override
     public ArrayList<String> sanitizeArguments(String[] arguments, boolean cutFirst) {
         if (cutFirst) {
-            arguments = Arrays.copyOfRange(arguments, 1, arguments.length);
+            try {
+                arguments = Arrays.copyOfRange(arguments, 1, arguments.length);
+            }
+            catch (IllegalArgumentException illegalArgumentException) {
+                return new ArrayList<String>();
+            }
         }
 
         ArrayList<String> sanitizedArguments = new ArrayList<String>();
@@ -51,7 +56,12 @@ public class SigmonioServiceImpl implements SigmonioService {
             }
 
         }
-        temporaryContent.deleteCharAt(temporaryContent.length() - 1);
+        try {
+            temporaryContent.deleteCharAt(temporaryContent.length() - 1);
+        }
+        catch (StringIndexOutOfBoundsException stringIndexOutOfBoundsException) {
+            return new ArrayList<String>();
+        }
         sanitizedArguments.add(temporaryContent.toString());
 
         return sanitizedArguments;

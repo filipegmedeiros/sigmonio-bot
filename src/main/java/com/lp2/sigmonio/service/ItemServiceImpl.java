@@ -50,15 +50,11 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ResponseEntity<Item> updateItemLocalization(String itemId, String newLocalizationName) throws ResourceNotFoundException {
-        try {
-            Item item = findById(Integer.parseInt(itemId));
-            Localization localization = localizationService.findByName(newLocalizationName);
-            item.setLocalization(localization);
-            final Item updatedItem = itemRepository.save(item);
-            return ResponseEntity.ok(updatedItem);
-        } catch (ResourceNotFoundException resourceNotFoundException) {
-            throw resourceNotFoundException;
-        }
+        Item item = findById(Integer.parseInt(itemId));
+        Localization localization = localizationService.findByName(newLocalizationName);
+        item.setLocalization(localization);
+        final Item updatedItem = itemRepository.save(item);
+        return ResponseEntity.ok(updatedItem);
     }
 
     @Override
