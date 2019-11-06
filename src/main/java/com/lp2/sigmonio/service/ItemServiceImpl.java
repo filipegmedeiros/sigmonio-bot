@@ -1,6 +1,7 @@
 package com.lp2.sigmonio.service;
 
 import com.lp2.sigmonio.exception.ResourceNotFoundException;
+import com.lp2.sigmonio.model.Category;
 import com.lp2.sigmonio.model.Item;
 import com.lp2.sigmonio.model.Localization;
 import com.lp2.sigmonio.repository.ItemRepository;
@@ -49,12 +50,19 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public ResponseEntity<Item> updateItemLocalization(String itemId, String newLocalizationName) throws ResourceNotFoundException {
+    public void updateItemLocalization(String itemId, String newLocalizationName) throws ResourceNotFoundException {
         Item item = findById(Integer.parseInt(itemId));
         Localization localization = localizationService.findByName(newLocalizationName);
         item.setLocalization(localization);
         final Item updatedItem = itemRepository.save(item);
-        return ResponseEntity.ok(updatedItem);
+    }
+
+    @Override
+    public void updateItemCategory(String itemId, String newCategoryName) throws ResourceNotFoundException {
+        Item item = findById(Integer.parseInt(itemId));
+        Category category = categoryService.findByName(newCategoryName);
+        item.setCategory(category);
+        final Item updatedItem = itemRepository.save(item);
     }
 
     @Override

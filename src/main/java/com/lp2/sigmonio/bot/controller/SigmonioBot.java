@@ -217,7 +217,7 @@ public class SigmonioBot extends AbilityBot {
                     String categoryName;
                     String partialDescription;
                     String firstArg = "";
-                    
+
                     try {
                         firstArg = messageContext.firstArg();
                     }
@@ -311,7 +311,7 @@ public class SigmonioBot extends AbilityBot {
                                 "/move `1`*,* `Room A309`", messageContext.chatId());
                     } else {
                         try {
-                            sigmonioService.moveItem(argument.get(0), argument.get(1));
+                            sigmonioService.moveItemForNewLocalization(argument.get(0), argument.get(1));
                             silent.send("Successful move", messageContext.chatId());
                         } catch (ResourceNotFoundException resourceNotFoundException) {
                             silent.send(resourceNotFoundException.getMessage(), messageContext.chatId());

@@ -12,7 +12,9 @@ public interface ItemService {
 
     ResponseEntity<Item> updateById(Item item, String id);
 
-    ResponseEntity<Item> updateItemLocalization(String itemId, String newLocalizationName);
+    void updateItemLocalization(String itemId, String newLocalizationName);
+    void updateItemCategory(String itemId, String newCategoryName);
+
 
     List<Item> findAll();
 

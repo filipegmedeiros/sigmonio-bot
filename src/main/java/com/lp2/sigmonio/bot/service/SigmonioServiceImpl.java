@@ -270,13 +270,13 @@ public class SigmonioServiceImpl implements SigmonioService {
     }
 
     @Override
-    public void moveItem(String itemId, String newLocalizationName) throws ResourceNotFoundException {
-        try {
-            itemService.updateItemLocalization(itemId, newLocalizationName);
-        } catch (ResourceNotFoundException resourceNotFoundException) {
-            throw resourceNotFoundException;
-        }
+    public void moveItemForNewLocalization(String itemId, String newLocalizationName) throws ResourceNotFoundException {
+        itemService.updateItemLocalization(itemId, newLocalizationName);
+    }
 
+    @Override
+    public void moveItemForNewCategory(String itemId, String newCategoryName) throws ResourceNotFoundException {
+        itemService.updateItemLocalization(itemId, newCategoryName);
     }
 
     @Override
