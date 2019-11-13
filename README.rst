@@ -35,14 +35,11 @@ The Sigmônio project is a BOT made for the Telegram application and implements 
 Getting started
 ===============
 
-Step 1 - Download the project from the sigmony repository on GitHub; 
-Step 2 - Open the terminal in the project directory; 
-Step 3 - Type ```docker-compose up -d``` to upload a local server; 
-Step 4 - Open Intellij, change Api-Key and Bot Name in properties, and click Run 
-Step 5 - Open telegram and start a conversation with your BOT;
-
-
-- Introduction to the usage on `wiki <https://github.com/filpegmedeiros/sigmonio-bot/wiki/Examples>`_ 
+- Step 1 - Download the project from the sigmony repository on GitHub; 
+- Step 2 - Open the terminal in the project directory; 
+- Step 3 - Type `docker-compose up -d` to upload a local server; 
+- Step 4 - Open Intellij, change Api-Key and Bot Name in properties, and click Run 
+- Step 5 - Open telegram and start a conversation with your BOT;
 
 Other references:
 
