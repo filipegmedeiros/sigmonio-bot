@@ -20,10 +20,6 @@ Table of contents
 - `Introduction`_
 
 - `Getting started`_
-
-  #. `Learning by example`_
-
-  #. `Wiki`_
   
 - `Getting help`_
 
@@ -33,13 +29,18 @@ Table of contents
 Introduction
 ============
 
-wait, we need to write yet :(
+The Sigmônio project is a BOT made for the Telegram application and implements a heritage system, which has the function of registering the assets of a particular company and keeping them updated as to their description, location and category. The idea is that the user through the Telegram application and a series of commands can register, list and update information.
 
 ===============
 Getting started
 ===============
 
-Our Wiki contains a lot of resources to get you started with ``sigmonio-bot``:
+Step 1 - Download the project from the sigmony repository on GitHub; 
+Step 2 - Open the terminal in the project directory; 
+Step 3 - Type ```docker-compose up -d``` to upload a local server; 
+Step 4 - Open Intellij, change Api-Key and Bot Name in properties, and click Run 
+Step 5 - Open telegram and start a conversation with your BOT;
+
 
 - Introduction to the usage on `wiki <https://github.com/filpegmedeiros/sigmonio-bot/wiki/Examples>`_ 
 
@@ -48,18 +49,7 @@ Other references:
 - `Telegram API documentation <https://core.telegram.org/bots/api>`_
 - `Java Telegram API documentation <https://https://github.com/pengrad/java-telegram-bot-api>`_
 - `Java documentation <https://devdocs.io/openjdk/>`_
-
--------------------
-Learning by example
--------------------
-
-wait, we need to write yet :(
     
--------------------
-Wiki
--------------------
-
-sigmonio-bot documentation lives at wiki `<https://github.com/filipegmedeirs/sigmonio-bot/wiki/>`_. :)
 
 ============
 Getting help
@@ -69,9 +59,7 @@ You can get help in several ways:
 
 1. We have a vibrant community of developers helping each other in our `Telegram group <https://telegram.me/sigmoniodevs>`_. Join us!
 
-2. Our `Wiki pages <https://github.com/filipegmedeirs/sigmonio-bot/wiki/>`_ offer a growing amount of resources.
-
-3. As last resort, the developers are ready to help you with `serious issues <https://github.com/filipegmedeiros/sigmonio-bot/issues/new>`_.
+2. As last resort, the developers are ready to help you with `serious issues <https://github.com/filipegmedeiros/sigmonio-bot/issues/new>`_.
 
 
 ============
